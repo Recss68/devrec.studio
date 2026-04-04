@@ -15,7 +15,7 @@ To recreate this project with the same configuration:
 
 ```sh
 # recreate this project
-pnpm dlx sv@0.14.0 create --template minimal --no-types --add prettier eslint vitest="usages:unit,component" paraglide="languageTags:en, nl+demo:no" --install pnpm ./
+npx sv@0.14.0 create --template minimal --no-types --add prettier eslint vitest="usages:unit,component" paraglide="languageTags:en, nl+demo:no" --install npm ./
 ```
 
 ## Developing
