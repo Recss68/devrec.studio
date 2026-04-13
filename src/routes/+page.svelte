@@ -1,2 +1,20 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<!-- <script>
+    import {  fly } from 'svelte/transition';
+    import { onMount } from 'svelte';
+
+    let visible = $state(false);
+
+    onMount(() => {
+        visible = true;
+    });
+</script>
+
+{#if visible}
+    <h1 in:fly={{ y: 200, duration: 500 }}>
+        WELCOME TO
+        <br>
+        DEVREC STUDIO
+    </h1>
+{/if} -->
+
+<h1>Hello world</h1>
