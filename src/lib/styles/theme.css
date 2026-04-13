@@ -178,10 +178,9 @@ html {
 
 body {
 	margin: 0;
-	font-family: var(--font-body);
-	font-size: var(--fs-body-md);
 	line-height: var(--lh-body);
 	overflow-x: hidden;
+    background-color: var(--c-global);
 }
 
 a {
@@ -191,6 +190,7 @@ a {
 
 p {
 	margin: 0 0 var(--space-4) 0;
+    font-family: var(--font-body);
 	font-size: var(--fs-body-md);
 	color: var(--c-text-light);
 }
