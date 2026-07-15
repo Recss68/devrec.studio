@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Rijschool All Drive — Global Stylesheet
+   devrec — Global Stylesheet
    Based on provided Style Guide (colors, typography, spacing)
    ========================================================================== */
 
@@ -13,8 +13,16 @@
 } 
 
 @font-face {
-  font-family: "DM Sans";
-  src: url("/fonts/dm-sans.woff2") format("woff2");
+  font-family: "DmSans";
+  src: url("/fonts/DMSans-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nofex";
+  src: url("/fonts/Nofex.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -67,8 +75,8 @@
 	--focus-ring-soft: rgba(21, 93, 252, 0.55);
 
 	/* Typography */
-	--font-heading: 'Gondens', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-	--font-body: 'DM Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	--font-heading: 'Nofex', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+	--font-body: 'DmSans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
 	/* Font weights */
 	--fw-light: 300;
@@ -163,6 +171,53 @@
 	--divider: rgba(128, 128, 128, 0.287);
 }
 
+/* --- Site B&W Theme (light mode default) ---------------------------------- */
+:root {
+	--c-bg: #ffffff;
+	--c-bg-alt: #f7f7f7;
+	--c-fg: #000000;
+	--c-fg-muted: #555555;
+	--c-border-site: #e5e5e5;
+	--c-accent: #000000;
+	--c-accent-inv: #ffffff;
+	--header-bg: rgba(255, 255, 255, 0.9);
+
+	/* Hero — light mode */
+	--hero-bg: #ffffff;
+	--hero-gradient-opacity: 0;
+	--hero-text: #000000;
+	--hero-text-muted: #555555;
+	--hero-border: #e5e5e5;
+	--hero-btn-primary-bg: #000000;
+	--hero-btn-primary-text: #ffffff;
+	--hero-btn-secondary-text: #000000;
+	--hero-btn-secondary-border: #d0d0d0;
+	--hero-scroll-color: #888888;
+}
+
+[data-theme='dark'] {
+	--c-bg: #000000;
+	--c-bg-alt: #0d0d0d;
+	--c-fg: #ffffff;
+	--c-fg-muted: #888888;
+	--c-border-site: #1c1c1c;
+	--c-accent: #ffffff;
+	--c-accent-inv: #000000;
+	--header-bg: rgba(0, 0, 0, 0.9);
+
+	/* Hero — dark mode */
+	--hero-bg: #09070e;
+	--hero-gradient-opacity: 1;
+	--hero-text: #ffffff;
+	--hero-text-muted: rgba(255, 255, 255, 0.55);
+	--hero-border: rgba(255, 255, 255, 0.15);
+	--hero-btn-primary-bg: #ffffff;
+	--hero-btn-primary-text: #000000;
+	--hero-btn-secondary-text: #ffffff;
+	--hero-btn-secondary-border: rgba(255, 255, 255, 0.25);
+	--hero-scroll-color: rgba(255, 255, 255, 0.4);
+}
+
 /* --- Reset / Base --------------------------------------------------------- */
 *,
 *::before,
@@ -180,7 +235,10 @@ body {
 	margin: 0;
 	line-height: var(--lh-body);
 	overflow-x: hidden;
-    background-color: var(--c-global);
+	font-family: var(--font-body);
+	background-color: var(--c-bg);
+	color: var(--c-fg);
+	transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 a {
@@ -190,9 +248,8 @@ a {
 
 p {
 	margin: 0 0 var(--space-4) 0;
-    font-family: var(--font-body);
 	font-size: var(--fs-body-md);
-	color: var(--c-text-light);
+	color: var(--c-fg-muted);
 }
 
 /* --- Typography Helpers --------------------------------------------------- */

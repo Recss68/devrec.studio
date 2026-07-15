@@ -1,0 +1,32 @@
+[
+	{
+		"id": 1,
+		"title": "All Drive Rijschool",
+		"description_nl": "Moderne website voor een rijschool met lesoverzicht en contactformulier.",
+		"description_en": "Modern website for a driving school with lesson overview and contact form.",
+		"tags": ["SvelteKit", "CSS", "Design"],
+		"year": "2024",
+		"url": "#",
+		"image": null
+	},
+	{
+		"id": 2,
+		"title": "Brand Identity Co.",
+		"description_nl": "Volledige merkidentiteit en web aanwezigheid voor een creatieve startup.",
+		"description_en": "Full brand identity and web presence for a creative startup.",
+		"tags": ["Design", "HTML", "CSS"],
+		"year": "2024",
+		"url": "#",
+		"image": null
+	},
+	{
+		"id": 3,
+		"title": "Webshop Platform",
+		"description_nl": "Snelle en schaalbare webshop met veilige betalingsverwerking via Stripe.",
+		"description_en": "Fast and scalable webshop with secure payment processing via Stripe.",
+		"tags": ["SvelteKit", "Stripe", "Node.js"],
+		"year": "2025",
+		"url": "#",
+		"image": null
+	}
+]
