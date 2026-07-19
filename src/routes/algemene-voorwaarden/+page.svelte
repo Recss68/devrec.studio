@@ -1,5 +1,11 @@
 <svelte:head>
 	<title>Algemene Voorwaarden — devrec</title>
+	<meta name="description" content="Algemene voorwaarden van devrec — de afspraken die gelden bij samenwerking." />
+	<meta property="og:title" content="Algemene Voorwaarden — devrec" />
+	<meta property="og:description" content="Algemene voorwaarden van devrec — de afspraken die gelden bij samenwerking." />
+	<meta name="twitter:title" content="Algemene Voorwaarden — devrec" />
+	<meta name="twitter:description" content="Algemene voorwaarden van devrec — de afspraken die gelden bij samenwerking." />
+	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <section class="legal-section">

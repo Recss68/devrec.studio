@@ -1,5 +1,11 @@
 <svelte:head>
 	<title>Privacyverklaring — devrec</title>
+	<meta name="description" content="Privacyverklaring van devrec — hoe wij omgaan met jouw persoonsgegevens." />
+	<meta property="og:title" content="Privacyverklaring — devrec" />
+	<meta property="og:description" content="Privacyverklaring van devrec — hoe wij omgaan met jouw persoonsgegevens." />
+	<meta name="twitter:title" content="Privacyverklaring — devrec" />
+	<meta name="twitter:description" content="Privacyverklaring van devrec — hoe wij omgaan met jouw persoonsgegevens." />
+	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <section class="legal-section">
