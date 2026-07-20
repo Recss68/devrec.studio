@@ -43,6 +43,12 @@
 	"portfolio_label": "Work",
 	"portfolio_heading": "Selected projects",
 	"portfolio_view": "View",
+	"portfolio_view_all": "View all projects",
+	"portfolio_page_title": "Portfolio — devrec",
+	"portfolio_page_meta": "An overview of all projects and work by devrec — web developer & designer based in Amsterdam.",
+	"portfolio_page_heading": "Portfolio",
+	"portfolio_page_sub": "An overview of my projects and work.",
+	"portfolio_back": "Back to home",
 	"faq_label": "FAQ",
 	"faq_heading": "Frequently asked questions",
 	"faq_1_q": "What does a website cost?",
@@ -171,5 +177,10 @@
 	"check_faq_5_q": "What are Core Web Vitals?",
 	"check_faq_5_a": "Core Web Vitals are three official Google performance metrics: LCP (load time), TBT/FID (interactivity) and CLS (layout stability). They directly influence your position in search results.",
 	"check_email_subject": "Extended website report — {url}",
-	"check_email_body": "Hello devrec,\n\nI would like to receive an extended report for: {url}\n\nMy email address: {email}\n\nKind regards"
+	"check_email_body": "Hello devrec,\n\nI would like to receive an extended report for: {url}\n\nMy email address: {email}\n\nKind regards",
+
+	"check_agentic_heading": "AI Readiness",
+	"check_agentic_sub": "How accessible and discoverable is your website for AI agents and automated browsers?",
+	"check_agentic_score": "{passed} of {total} checks passed",
+	"check_agentic_experimental": "Experimental"
 }

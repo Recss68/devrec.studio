@@ -36,6 +36,7 @@ export async function POST({ request }) {
 		`&category=accessibility` +
 		`&category=seo` +
 		`&category=best-practices` +
+		`&category=agentic-browsing` +
 		key;
 
 	let res;

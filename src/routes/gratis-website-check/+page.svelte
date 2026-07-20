@@ -79,6 +79,25 @@
 		return str.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/`([^`]+)`/g, '$1');
 	}
 
+	const AGENTIC_IDS = [
+		'llms-txt',
+		'agent-accessibility-tree',
+		'cumulative-layout-shift',
+		'webmcp-registered-tools',
+		'webmcp-form-coverage',
+		'webmcp-schema-validity'
+	];
+
+	function getAgenticAudits() {
+		const audits = result?.lighthouseResult?.audits;
+		if (!audits) return [];
+		return AGENTIC_IDS.map((id) => {
+			const a = audits[id];
+			if (!a) return null;
+			return { id, title: a.title, displayValue: a.displayValue ?? null, score: a.score, displayMode: a.scoreDisplayMode };
+		}).filter(Boolean);
+	}
+
 	function improvements() {
 		if (!result) return [];
 		const audits = result.lighthouseResult?.audits ?? {};
@@ -311,6 +330,57 @@
 								<div class="tip-content">
 									<strong class="tip-title">{tip.title}</strong>
 									<span class="tip-desc">{stripMd(tip.description).slice(0, 120)}{tip.description.length > 120 ? '…' : ''}</span>
+								</div>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+
+			<!-- Agentic Browsing -->
+			{#if result?.lighthouseResult?.categories?.['agentic-browsing']}
+				{@const agAudits = getAgenticAudits()}
+				{@const agPassed = agAudits.filter((a) => a.score === 1).length}
+				{@const agTotal = agAudits.filter((a) => a.score !== null && a.displayMode !== 'notApplicable').length}
+				<div class="agentic-block">
+					<div class="agentic-head">
+						<div>
+							<h2 class="block-heading">{m.check_agentic_heading()}</h2>
+							<p class="block-sub">{m.check_agentic_sub()}</p>
+						</div>
+						<span class="agentic-badge">{m.check_agentic_experimental()}</span>
+					</div>
+
+					<div class="agentic-score-row">
+						<span class="agentic-fraction">
+							{agPassed}<span class="agentic-denom">/{agTotal}</span>
+						</span>
+						<div class="agentic-bar" aria-hidden="true">
+							<div
+								class="agentic-bar-fill"
+								style="width:{animated && agTotal > 0 ? (agPassed / agTotal) * 100 : 0}%"
+							></div>
+						</div>
+						<span class="agentic-score-label">{m.check_agentic_score({ passed: agPassed, total: agTotal })}</span>
+					</div>
+
+					<ul class="agentic-list">
+						{#each agAudits as audit}
+							{@const isPass = audit.score === 1}
+							{@const isNa = audit.score === null || audit.displayMode === 'notApplicable' || audit.displayMode === 'informative'}
+							<li class="agentic-row">
+								<span
+									class="agentic-icon"
+									class:agentic-icon-pass={isPass}
+									class:agentic-icon-fail={!isPass && !isNa}
+									class:agentic-icon-na={isNa}
+									aria-hidden="true"
+								>{#if isNa}–{:else if isPass}✓{:else}✗{/if}</span>
+								<div class="agentic-audit-info">
+									<span class="agentic-audit-title">{audit.title}</span>
+									{#if audit.displayValue}
+										<span class="agentic-audit-value">{audit.displayValue}</span>
+									{/if}
 								</div>
 							</li>
 						{/each}
@@ -816,6 +886,132 @@
 	.report-success svg { flex-shrink: 0; margin-top: 2px; }
 	.report-success strong { display: block; color: var(--c-fg); font-size: 0.95rem; margin-bottom: 0.25rem; }
 	.report-success p { font-size: 0.85rem; color: var(--c-fg-muted); margin: 0; }
+
+	/* Agentic Browsing */
+	.agentic-block {
+		margin-bottom: 2rem;
+		border: 1px solid var(--c-border-site);
+		border-radius: 14px;
+		padding: 1.5rem;
+	}
+
+	.agentic-head {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.agentic-head .block-sub { margin-bottom: 0; }
+
+	.agentic-badge {
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--c-fg-muted);
+		border: 1px solid var(--c-border-site);
+		padding: 0.2rem 0.6rem;
+		border-radius: 999px;
+		white-space: nowrap;
+		flex-shrink: 0;
+		margin-top: 0.2rem;
+	}
+
+	.agentic-score-row {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1.25rem;
+		flex-wrap: wrap;
+	}
+
+	.agentic-fraction {
+		font-family: var(--font-heading);
+		font-size: 2rem;
+		font-weight: 700;
+		letter-spacing: -0.04em;
+		color: var(--c-fg);
+		line-height: 1;
+		flex-shrink: 0;
+	}
+
+	.agentic-denom {
+		font-size: 1.1rem;
+		color: var(--c-fg-muted);
+	}
+
+	.agentic-bar {
+		flex: 1;
+		height: 6px;
+		background: var(--c-border-site);
+		border-radius: 999px;
+		overflow: hidden;
+		min-width: 80px;
+	}
+
+	.agentic-bar-fill {
+		height: 100%;
+		background: var(--c-fg);
+		border-radius: 999px;
+		transition: width 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.agentic-score-label {
+		font-size: 0.82rem;
+		color: var(--c-fg-muted);
+		white-space: nowrap;
+	}
+
+	.agentic-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.agentic-row {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+		padding: 0.7rem 0;
+		border-top: 1px solid var(--c-border-site);
+	}
+
+	.agentic-icon {
+		flex-shrink: 0;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.72rem;
+		font-weight: 700;
+		margin-top: 1px;
+	}
+
+	.agentic-icon-pass { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
+	.agentic-icon-fail { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+	.agentic-icon-na   { background: var(--c-bg-alt); color: var(--c-fg-muted); }
+
+	.agentic-audit-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.agentic-audit-title {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--c-fg);
+		line-height: 1.3;
+	}
+
+	.agentic-audit-value {
+		font-size: 0.78rem;
+		color: var(--c-fg-muted);
+	}
 
 	/* FAQ */
 	.faq-section {

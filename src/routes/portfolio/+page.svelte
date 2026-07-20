@@ -14,10 +14,31 @@
 	});
 </script>
 
-<section class="section" id="portfolio">
+<svelte:head>
+	<title>{m.portfolio_page_title()}</title>
+	<meta name="description" content={m.portfolio_page_meta()} />
+	<meta property="og:title" content={m.portfolio_page_title()} />
+	<meta property="og:description" content={m.portfolio_page_meta()} />
+	<meta name="twitter:title" content={m.portfolio_page_title()} />
+	<meta name="twitter:description" content={m.portfolio_page_meta()} />
+</svelte:head>
+
+<div class="portfolio-page section">
 	<div class="section-inner">
-		<span class="section-label">{m.portfolio_label()}</span>
-		<h2 class="portfolio-heading">{m.portfolio_heading()}</h2>
+
+		<a href="/" class="back-link">
+			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+				<line x1="19" y1="12" x2="5" y2="12"/>
+				<polyline points="12 19 5 12 12 5"/>
+			</svg>
+			{m.portfolio_back()}
+		</a>
+
+		<div class="page-head">
+			<span class="section-label">{m.portfolio_label()}</span>
+			<h1 class="page-h1">{m.portfolio_page_heading()}</h1>
+			<p class="page-sub">{m.portfolio_page_sub()}</p>
+		</div>
 
 		<div class="portfolio-grid">
 			{#each portfolioData as project}
@@ -49,7 +70,7 @@
 							</a>
 						</div>
 
-						<h3 class="card-title">{project.title}</h3>
+						<h2 class="card-title">{project.title}</h2>
 
 						<p class="card-desc">
 							{locale === 'en' ? project.description_en : project.description_nl}
@@ -65,38 +86,49 @@
 			{/each}
 		</div>
 
-		<div class="portfolio-footer">
-			<a href="/portfolio" class="portfolio-view-all">
-				{m.portfolio_view_all()}
-				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-					<line x1="5" y1="12" x2="19" y2="12"/>
-					<polyline points="12 5 19 12 12 19"/>
-				</svg>
-			</a>
-		</div>
 	</div>
-</section>
+</div>
 
 <style>
-	.section-label {
-		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+	.portfolio-page {
+		padding-top: clamp(6rem, 12vw, 10rem);
+	}
+
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-size: 0.82rem;
 		color: var(--c-fg-muted);
-		margin-bottom: 1rem;
+		text-decoration: none;
+		margin-bottom: 3rem;
+		transition: color 0.15s;
 	}
 
-	.portfolio-heading {
+	.back-link:hover { color: var(--c-fg); }
+
+	.page-head {
+		margin-bottom: clamp(2.5rem, 5vw, 4rem);
+	}
+
+	.page-h1 {
 		font-family: var(--font-heading);
-		font-size: clamp(1.75rem, 4vw, 3rem);
-		line-height: 1.1;
-		letter-spacing: -0.02em;
+		font-size: clamp(2.5rem, 7vw, 5rem);
+		letter-spacing: -0.03em;
+		line-height: 1.05;
 		color: var(--c-fg);
-		margin: 0 0 3rem 0;
+		margin: 0.5rem 0 0.75rem;
 	}
 
+	.page-sub {
+		font-size: clamp(0.95rem, 2vw, 1.05rem);
+		color: var(--c-fg-muted);
+		line-height: 1.65;
+		margin: 0;
+		max-width: 480px;
+	}
+
+	/* Grid — same as homepage portfolio */
 	.portfolio-grid {
 		display: grid;
 		grid-template-columns: 1fr;
@@ -114,13 +146,8 @@
 		flex-direction: column;
 	}
 
-	.project-card:last-child {
-		border-bottom: none;
-	}
-
-	.project-card:hover {
-		background: var(--c-bg-alt);
-	}
+	.project-card:last-child { border-bottom: none; }
+	.project-card:hover { background: var(--c-bg-alt); }
 
 	.card-image {
 		width: 100%;
@@ -176,10 +203,7 @@
 		border-radius: 4px;
 	}
 
-	.card-body {
-		padding: 1.5rem;
-		flex: 1;
-	}
+	.card-body { padding: 1.5rem; flex: 1; }
 
 	.card-top {
 		display: flex;
@@ -246,65 +270,24 @@
 		border-radius: 4px;
 	}
 
-	.portfolio-footer {
-		margin-top: 2rem;
-		display: flex;
-		justify-content: flex-end;
-	}
-
-	.portfolio-view-all {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.45rem;
-		font-size: 0.875rem;
-		font-weight: 500;
-		color: var(--c-fg-muted);
-		text-decoration: none;
-		transition: color 0.15s ease;
-	}
-
-	.portfolio-view-all:hover {
-		color: var(--c-fg);
-	}
-
 	@media (min-width: 640px) {
-		.portfolio-grid {
-			grid-template-columns: 1fr 1fr;
-		}
+		.portfolio-grid { grid-template-columns: 1fr 1fr; }
 
 		.project-card {
 			border-bottom: none;
 			border-right: 1px solid var(--c-border-site);
 		}
 
-		.project-card:last-child {
-			border-right: none;
-		}
-
-		.project-card:nth-child(even) {
-			border-right: none;
-		}
-
-		.project-card:not(:nth-last-child(-n+2)) {
-			border-bottom: 1px solid var(--c-border-site);
-		}
+		.project-card:last-child { border-right: none; }
+		.project-card:nth-child(even) { border-right: none; }
+		.project-card:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--c-border-site); }
 	}
 
 	@media (min-width: 1024px) {
-		.portfolio-grid {
-			grid-template-columns: repeat(3, 1fr);
-		}
+		.portfolio-grid { grid-template-columns: repeat(3, 1fr); }
 
-		.project-card:nth-child(even) {
-			border-right: 1px solid var(--c-border-site);
-		}
-
-		.project-card:nth-child(3n) {
-			border-right: none;
-		}
-
-		.project-card:not(:nth-last-child(-n+3)) {
-			border-bottom: 1px solid var(--c-border-site);
-		}
+		.project-card:nth-child(even) { border-right: 1px solid var(--c-border-site); }
+		.project-card:nth-child(3n) { border-right: none; }
+		.project-card:not(:nth-last-child(-n+3)) { border-bottom: 1px solid var(--c-border-site); }
 	}
 </style>

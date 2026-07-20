@@ -43,6 +43,12 @@
 	"portfolio_label": "Werk",
 	"portfolio_heading": "Geselecteerde projecten",
 	"portfolio_view": "Bekijken",
+	"portfolio_view_all": "Bekijk alle projecten",
+	"portfolio_page_title": "Portfolio — devrec",
+	"portfolio_page_meta": "Een overzicht van alle projecten en realisaties van devrec — webdeveloper & designer in Amsterdam.",
+	"portfolio_page_heading": "Portfolio",
+	"portfolio_page_sub": "Een overzicht van mijn projecten en realisaties.",
+	"portfolio_back": "Terug naar home",
 	"faq_label": "FAQ",
 	"faq_heading": "Veelgestelde vragen",
 	"faq_1_q": "Wat kost een website?",
@@ -171,5 +177,10 @@
 	"check_faq_5_q": "Wat zijn Core Web Vitals?",
 	"check_faq_5_a": "Core Web Vitals zijn drie officiële prestatiemetingen van Google: LCP (laadtijd), TBT/FID (interactiviteit) en CLS (stabiliteit van de lay-out). Ze beïnvloeden direct je positie in de zoekresultaten.",
 	"check_email_subject": "Uitgebreid website rapport — {url}",
-	"check_email_body": "Hallo devrec,\n\nIk wil graag een uitgebreid rapport ontvangen voor: {url}\n\nMijn e-mailadres: {email}\n\nMet vriendelijke groeten"
+	"check_email_body": "Hallo devrec,\n\nIk wil graag een uitgebreid rapport ontvangen voor: {url}\n\nMijn e-mailadres: {email}\n\nMet vriendelijke groeten",
+
+	"check_agentic_heading": "AI-Gereedheid",
+	"check_agentic_sub": "Hoe toegankelijk en vindbaar is jouw website voor AI-agents en geautomatiseerde browsers?",
+	"check_agentic_score": "{passed} van {total} checks geslaagd",
+	"check_agentic_experimental": "Experimenteel"
 }
