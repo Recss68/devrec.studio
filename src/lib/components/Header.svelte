@@ -9,9 +9,18 @@
 	let scrolled = $state(false);
 
 	onMount(() => {
-		const stored = localStorage.getItem('devrec-theme');
-		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-		theme = stored ?? (prefersDark ? 'dark' : 'light');
+		// Read what app.html's inline script already applied — avoids duplicate logic
+		theme = (document.documentElement.getAttribute('data-theme') ?? 'light');
+
+		// Follow OS preference changes live (only when user has no manual override)
+		const mql = window.matchMedia('(prefers-color-scheme: dark)');
+		const onSystemChange = (e) => {
+			if (!localStorage.getItem('devrec-theme')) {
+				theme = e.matches ? 'dark' : 'light';
+				document.documentElement.setAttribute('data-theme', theme);
+			}
+		};
+		mql.addEventListener('change', onSystemChange);
 
 		try {
 			locale = getLocale();
@@ -21,7 +30,11 @@
 
 		const onScroll = () => (scrolled = window.scrollY > 20);
 		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
+
+		return () => {
+			window.removeEventListener('scroll', onScroll);
+			mql.removeEventListener('change', onSystemChange);
+		};
 	});
 
 	function toggleTheme() {
