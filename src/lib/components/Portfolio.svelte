@@ -100,7 +100,7 @@
 	.portfolio-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 1px;
+		gap: 0;
 		border: 1px solid var(--c-border-site);
 		border-radius: 8px;
 		overflow: hidden;
@@ -273,20 +273,23 @@
 		}
 
 		.project-card {
-			border-bottom: none;
+			border-bottom: 1px solid var(--c-border-site);
 			border-right: 1px solid var(--c-border-site);
 		}
 
+		/* Remove right border on even cards (last in each 2-col row) */
+		.project-card:nth-child(2n) {
+			border-right: none;
+		}
+
+		/* Remove bottom border on last row (last 2 cards) */
+		.project-card:nth-last-child(-n+2) {
+			border-bottom: none;
+		}
+
+		/* If odd number of cards, last card alone in row also has no bottom */
 		.project-card:last-child {
-			border-right: none;
-		}
-
-		.project-card:nth-child(even) {
-			border-right: none;
-		}
-
-		.project-card:not(:nth-last-child(-n+2)) {
-			border-bottom: 1px solid var(--c-border-site);
+			border-bottom: none;
 		}
 	}
 
@@ -295,14 +298,36 @@
 			grid-template-columns: repeat(3, 1fr);
 		}
 
-		.project-card:nth-child(even) {
+		/* Reset 2-col overrides */
+		.project-card:nth-child(2n) {
 			border-right: 1px solid var(--c-border-site);
 		}
 
+		.project-card:nth-last-child(-n+2) {
+			border-bottom: 1px solid var(--c-border-site);
+		}
+
+		.project-card {
+			border-right: 1px solid var(--c-border-site);
+			border-bottom: 1px solid var(--c-border-site);
+		}
+
+		/* Remove right border on 3rd column */
 		.project-card:nth-child(3n) {
 			border-right: none;
 		}
 
+		/* Remove right border on last card if not 3rd column */
+		.project-card:last-child:not(:nth-child(3n)) {
+			border-right: none;
+		}
+
+		/* Remove bottom border on cards in last row */
+		.project-card:nth-last-child(-n+3) {
+			border-bottom: none;
+		}
+
+		/* Restore bottom border for cards not in last row that may have been reset */
 		.project-card:not(:nth-last-child(-n+3)) {
 			border-bottom: 1px solid var(--c-border-site);
 		}

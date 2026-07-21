@@ -1,4 +1,5 @@
 export { default as Header } from './components/Header.svelte';
+export { default as QuoteModal } from './components/QuoteModal.svelte';
 export { default as Hero } from './components/Hero.svelte';
 export { default as About } from './components/About.svelte';
 export { default as Services } from './components/Services.svelte';

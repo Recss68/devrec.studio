@@ -1,5 +1,6 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
+	import { openQuote } from '$lib/stores/quote.js';
 </script>
 
 <section class="section" id="diensten">
@@ -17,18 +18,21 @@
 					<span class="service-tag">{m.service_1_tag_2()}</span>
 					<span class="service-tag">{m.service_1_tag_3()}</span>
 				</div>
+				<button class="service-quote-btn" onclick={() => openQuote('web')}>{m.quote_modal_title()}</button>
 			</article>
 
 			<article class="service-card">
 				<div class="service-number" aria-hidden="true">02</div>
 				<h3 class="service-title">{m.service_2_title()}</h3>
 				<p class="service-desc">{m.service_2_desc()}</p>
+				<button class="service-quote-btn" onclick={() => openQuote('hosting')}>{m.quote_modal_title()}</button>
 			</article>
 
 			<article class="service-card">
 				<div class="service-number" aria-hidden="true">03</div>
 				<h3 class="service-title">{m.service_3_title()}</h3>
 				<p class="service-desc">{m.service_3_desc()}</p>
+				<button class="service-quote-btn" onclick={() => openQuote('shop')}>{m.quote_modal_title()}</button>
 			</article>
 
 			<article class="service-card">
@@ -40,6 +44,7 @@
 					<span class="service-tag">{m.service_4_tag_2()}</span>
 					<span class="service-tag">{m.service_4_tag_3()}</span>
 				</div>
+				<button class="service-quote-btn" onclick={() => openQuote('optimization')}>{m.quote_modal_title()}</button>
 			</article>
 
 			<article class="service-card">
@@ -51,6 +56,7 @@
 					<span class="service-tag">{m.service_5_tag_2()}</span>
 					<span class="service-tag">{m.service_5_tag_3()}</span>
 				</div>
+				<button class="service-quote-btn" onclick={() => openQuote('marketing')}>{m.quote_modal_title()}</button>
 			</article>
 		</div>
 	</div>
@@ -79,7 +85,7 @@
 	.services-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 1px;
+		gap: 0;
 		border: 1px solid var(--c-border-site);
 		border-radius: 8px;
 		overflow: hidden;
@@ -142,6 +148,30 @@
 		border-radius: 999px;
 	}
 
+	.service-quote-btn {
+		margin-top: auto;
+		align-self: flex-start;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		background: none;
+		border: 1px solid var(--c-border-site);
+		border-radius: 6px;
+		padding: 0.45rem 0.9rem;
+		font-size: 0.78rem;
+		font-weight: 600;
+		font-family: var(--font-body);
+		color: var(--c-fg-muted);
+		cursor: pointer;
+		transition: border-color 0.15s, color 0.15s;
+		margin-top: 1.25rem;
+	}
+
+	.service-quote-btn:hover {
+		border-color: var(--c-fg);
+		color: var(--c-fg);
+	}
+
 	@media (min-width: 640px) {
 		.services-grid {
 			grid-template-columns: repeat(2, 1fr);
@@ -169,6 +199,12 @@
 			grid-template-columns: repeat(3, 1fr);
 		}
 
+		/* Reset 2-col override: nth-child(2n) has higher specificity (0,2,0) than
+		   the generic .service-card rule (0,1,0), so it must be explicitly undone here */
+		.service-card:nth-child(2n) {
+			border-right: 1px solid var(--c-border-site);
+		}
+
 		.service-card {
 			border-right: 1px solid var(--c-border-site);
 			border-bottom: 1px solid var(--c-border-site);
@@ -179,7 +215,12 @@
 			border-right: none;
 		}
 
-		/* Items in 2nd row (4, 5) have no bottom border */
+		/* No right border on last card when it doesn't land on the 3rd column */
+		.service-card:last-child:not(:nth-child(3n)) {
+			border-right: none;
+		}
+
+		/* Items in last row have no bottom border */
 		.service-card:nth-child(n+4) {
 			border-bottom: none;
 		}

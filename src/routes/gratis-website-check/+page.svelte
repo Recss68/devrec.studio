@@ -495,7 +495,7 @@
 
 	.checker-h1 {
 		font-family: var(--font-heading);
-		font-size: clamp(2.4rem, 7vw, 4.5rem);
+		font-size: clamp(1.75rem, 7vw, 4.5rem);
 		line-height: 1.05;
 		letter-spacing: -0.03em;
 		color: var(--c-fg);

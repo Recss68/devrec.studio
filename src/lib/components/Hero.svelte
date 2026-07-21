@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { m } from '$lib/paraglide/messages.js';
+	import { openQuote } from '$lib/stores/quote.js';
 
 	let displayText = $state('');
 	let typingDone = $state(false);
@@ -40,7 +41,7 @@
 
 			<div class="hero-cta">
 				<a href="#contact" class="btn btn-primary">{m.hero_cta_primary()}</a>
-				<a href="#contact" class="btn btn-secondary">{m.hero_cta_secondary()}</a>
+				<button onclick={() => openQuote()} class="btn btn-secondary">{m.hero_cta_secondary()}</button>
 			</div>
 		</div>
 
@@ -67,6 +68,7 @@
 		position: relative;
 		min-height: 100svh;
 		overflow: hidden;
+		max-width: 100%;
 		background: var(--hero-bg);
 		transition: background 0.2s ease;
 	}
@@ -117,13 +119,14 @@
 
 	.hero-heading {
 		font-family: var(--font-heading);
-		font-size: clamp(2.8rem, 9vw, 7.5rem);
+		font-size: clamp(1.5rem, 9vw, 7.5rem);
 		line-height: 1.0;
 		letter-spacing: -0.03em;
 		color: var(--hero-text);
 		margin: 0 0 1.5rem 0;
 		transition: color 0.2s ease;
 		min-height: 1.1em;
+		word-break: break-word;
 	}
 
 	.char {
@@ -187,10 +190,12 @@
 		padding: 0.75rem 1.5rem;
 		font-size: 0.9rem;
 		font-weight: 600;
+		font-family: var(--font-body);
 		letter-spacing: 0.01em;
 		border-radius: 6px;
 		transition: opacity 0.15s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 		white-space: nowrap;
+		cursor: pointer;
 	}
 
 	.btn-primary {

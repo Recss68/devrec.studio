@@ -112,6 +112,7 @@
 <style>
 	.reviews-section {
 		overflow: hidden;
+		max-width: 100%;
 	}
 
 	.reviews-head {

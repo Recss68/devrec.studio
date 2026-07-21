@@ -201,7 +201,6 @@
 		font-size: 0.8rem;
 		color: var(--c-fg-muted);
 		margin: 0;
-		white-space: nowrap;
 	}
 
 	@media (min-width: 640px) {

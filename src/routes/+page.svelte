@@ -59,6 +59,7 @@
 
 	.tool-cta-text {
 		flex: 1;
+		min-width: 0;
 	}
 
 	.tool-cta-arrow {

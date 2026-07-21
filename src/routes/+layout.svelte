@@ -1,7 +1,7 @@
 <script>
 	import favicon from '$lib/assets/favicon.svg';
 	import '$lib/styles/theme.css';
-	import { Header, Footer } from '$lib';
+	import { Header, Footer, QuoteModal } from '$lib';
 	import CookieConsent from '$lib/components/CookieConsent.svelte';
 	import { page } from '$app/state';
 
@@ -35,6 +35,7 @@
 </main>
 <Footer />
 <CookieConsent />
+<QuoteModal />
 
 <style>
 	main {
