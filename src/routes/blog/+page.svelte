@@ -1,3 +1,3 @@
 <svelte:head>
-	<title>Blog — devrec</title>
+	<title>Blog | devrec</title>
 </svelte:head>

@@ -1,3 +1,3 @@
 <svelte:head>
-	<title>Diensten — devrec</title>
+	<title>Diensten | devrec</title>
 </svelte:head>
