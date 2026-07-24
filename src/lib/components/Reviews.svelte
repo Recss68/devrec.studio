@@ -1,8 +1,12 @@
 <script>
-	import reviewsData from '$lib/data/reviews.json';
 	import { m } from '$lib/paraglide/messages.js';
 
-	const reviews = reviewsData;
+	/** @type {{ reviews: Array<{_id: string, author_name: string, rating: number, date: string, text: string}> }} */
+	const { reviews = [] } = $props();
+
+	const avgRating = $derived(
+		reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : 0
+	);
 
 	function starList(rating) {
 		const r = Math.round(rating ?? 0);
@@ -21,21 +25,23 @@
 	function timeAgo(dateStr = '') {
 		const diff = Date.now() - new Date(dateStr).getTime();
 		const days = Math.floor(diff / 86400000);
-		if (days < 14) return days <= 1 ? 'gisteren' : `${days} dagen geleden`;
+		if (days < 1) return 'vandaag';
+		if (days < 2) return 'gisteren';
+		if (days < 14) return `${days} dagen geleden`;
 		const months = Math.floor(days / 30.5);
-		if (months < 12) return months === 1 ? 'een maand geleden' : `${months} maanden geleden`;
+		if (months < 2) return 'een maand geleden';
+		if (months < 12) return `${months} maanden geleden`;
 		const years = Math.floor(months / 12);
-		return years === 1 ? 'een jaar geleden' : `${years} jaar geleden`;
+		return years < 2 ? 'een jaar geleden' : `${years} jaar geleden`;
 	}
 
-	// Trim review text to ~200 chars at word boundary
 	function excerpt(text = '', max = 200) {
 		if (text.length <= max) return text;
 		return text.slice(0, max).replace(/\s+\S*$/, '') + '…';
 	}
 </script>
 
-{#if reviews.items.length > 0}
+{#if reviews.length > 0}
 	<section class="section reviews-section" id="beoordelingen">
 		<div class="section-inner">
 
@@ -60,11 +66,11 @@
 					</a>
 				</div>
 
-				{#if reviews.rating}
+				{#if avgRating > 0}
 					<div class="rating-summary">
-						<span class="rating-num">{reviews.rating.toFixed(1)}</span>
-						<div class="rating-stars" aria-label="{reviews.rating.toFixed(1)} / 5">
-							{#each starList(reviews.rating) as filled}
+						<span class="rating-num">{avgRating.toFixed(1)}</span>
+						<div class="rating-stars" aria-label="{avgRating.toFixed(1)} / 5">
+							{#each starList(avgRating) as filled}
 								<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
 									{#if filled}
 										<polygon fill="currentColor" points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
@@ -74,13 +80,13 @@
 								</svg>
 							{/each}
 						</div>
-						<span class="rating-count">{m.reviews_rating_count({ total: reviews.total })}</span>
+						<span class="rating-count">{m.reviews_rating_count({ total: reviews.length })}</span>
 					</div>
 				{/if}
 			</div>
 
 			<div class="reviews-track">
-				{#each reviews.items as review}
+				{#each reviews as review (review._id)}
 					<article class="review-card">
 						<div class="review-header">
 							<div class="review-avatar" aria-hidden="true">{initials(review.author_name)}</div>

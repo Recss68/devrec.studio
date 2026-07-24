@@ -1,7 +1,10 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale } from '$lib/paraglide/runtime.js';
-	import portfolioData from '$lib/data/portfolio.json';
+	import { urlFor } from '$lib/sanity/image.js';
+
+	/** @type {{ projects: Array<any> }} */
+	const { projects = [] } = $props();
 
 	let locale = $state('nl');
 
@@ -20,11 +23,11 @@
 		<h2 class="portfolio-heading">{m.portfolio_heading()}</h2>
 
 		<div class="portfolio-grid">
-			{#each portfolioData as project}
+			{#each projects as project (project._id)}
 				<article class="project-card">
 					<div class="card-image">
 						{#if project.image}
-							<img src={project.image} alt={project.title} loading="lazy" />
+							<img src={urlFor(project.image).width(800).url()} alt={project.title} loading="lazy" />
 						{:else}
 							<div class="card-placeholder" aria-hidden="true">
 								<span class="placeholder-label">{project.title}</span>
@@ -36,11 +39,11 @@
 						<div class="card-top">
 							<span class="card-year">{project.year}</span>
 							<a
-								href={project.url}
+								href={project.url ?? '#'}
 								class="card-link"
 								aria-label="{project.title} {m.portfolio_view()}"
-								target={project.url !== '#' ? '_blank' : undefined}
-								rel={project.url !== '#' ? 'noopener noreferrer' : undefined}
+								target={project.url ? '_blank' : undefined}
+								rel={project.url ? 'noopener noreferrer' : undefined}
 							>
 								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
 									<line x1="7" y1="17" x2="17" y2="7"/>
@@ -52,11 +55,11 @@
 						<h3 class="card-title">{project.title}</h3>
 
 						<p class="card-desc">
-							{locale === 'en' ? project.description_en : project.description_nl}
+							{locale === 'en' ? (project.description_en ?? project.description_nl) : project.description_nl}
 						</p>
 
 						<div class="card-tags">
-							{#each project.tags as tag}
+							{#each (project.tags ?? []) as tag}
 								<span class="tag">{tag}</span>
 							{/each}
 						</div>

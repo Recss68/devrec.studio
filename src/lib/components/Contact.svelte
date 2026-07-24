@@ -6,14 +6,32 @@
 	let name = $state('');
 	let email = $state('');
 	let message = $state('');
-	let status = $state('idle');
+	let status = $state('idle'); // idle | loading | success | error
 
-	function handleSubmit(e) {
+	async function handleSubmit(e) {
 		e.preventDefault();
-		const subject = encodeURIComponent(`Aanvraag van ${name}`);
-		const body = encodeURIComponent(`Naam: ${name}\nE-mail: ${email}\n\n${message}`);
-		window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
-		status = 'sent';
+		if (status === 'loading') return;
+		status = 'loading';
+
+		try {
+			const res = await fetch('/api/contact', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ name, email, message })
+			});
+
+			if (!res.ok) {
+				status = 'error';
+				return;
+			}
+
+			status = 'success';
+			name = '';
+			email = '';
+			message = '';
+		} catch {
+			status = 'error';
+		}
 	}
 </script>
 
@@ -57,7 +75,19 @@
 					></textarea>
 				</div>
 
-				<button type="submit" class="submit-btn">{m.contact_send()}</button>
+				<button type="submit" class="submit-btn" disabled={status === 'loading'}>
+					{#if status === 'loading'}
+						<span class="spinner" aria-hidden="true"></span>
+					{:else}
+						{m.contact_send()}
+					{/if}
+				</button>
+
+				{#if status === 'success'}
+					<p class="form-feedback form-feedback-success">Bedankt! Je bericht is verstuurd.</p>
+				{:else if status === 'error'}
+					<p class="form-feedback form-feedback-error">Er is iets misgegaan. Probeer het opnieuw of mail direct naar <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+				{/if}
 			</form>
 
 			<div class="contact-aside">
@@ -160,8 +190,45 @@
 		transition: opacity 0.15s ease;
 	}
 
-	.submit-btn:hover {
+	.submit-btn:hover:not(:disabled) {
 		opacity: 0.85;
+	}
+
+	.submit-btn:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	.spinner {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		border: 2px solid currentColor;
+		border-top-color: transparent;
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	.form-feedback {
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
+	.form-feedback-success {
+		color: #22c55e;
+	}
+
+	.form-feedback-error {
+		color: #ef4444;
+	}
+
+	.form-feedback-error a {
+		color: inherit;
+		text-decoration: underline;
 	}
 
 	.contact-aside {

@@ -152,10 +152,19 @@
 		if (e.key === 'Enter') runCheck();
 	}
 
-	function sendReport() {
-		const subject = encodeURIComponent(m.check_email_subject({ url: urlInput }));
-		const body = encodeURIComponent(m.check_email_body({ url: urlInput, email }));
-		window.open(`mailto:recep@devrec.nl?subject=${subject}&body=${body}`, '_self');
+	async function sendReport() {
+		try {
+			const res = await fetch('/api/check-report', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ url: urlInput, email })
+			});
+
+			if (!res.ok) return;
+		} catch {
+			// silently ignore, still mark sent
+		}
+
 		reportSent = true;
 	}
 </script>
@@ -172,11 +181,11 @@
 		'@type': 'WebApplication',
 		name: m.check_h1(),
 		description: m.check_meta_desc(),
-		url: 'https://devrec.studio/gratis-website-check',
+		url: 'https://devrec.nl/gratis-website-check',
 		applicationCategory: 'UtilityApplication',
 		operatingSystem: 'Web',
 		offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
-		creator: { '@type': 'Organization', name: 'devrec', url: 'https://devrec.studio' }
+		creator: { '@type': 'Organization', name: 'devrec', url: 'https://devrec.nl' }
 	})}<\/script>`}
 	{@html `<script type="application/ld+json">${JSON.stringify({
 		'@context': 'https://schema.org',

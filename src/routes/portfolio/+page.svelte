@@ -1,16 +1,16 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale } from '$lib/paraglide/runtime.js';
-	import portfolioData from '$lib/data/portfolio.json';
+	import { useQuery } from '@sanity/sveltekit';
+	import { urlFor } from '$lib/sanity/image.js';
+
+	const { data } = $props();
+	const result = $derived(useQuery(data));
+	const projects = $derived($result.data ?? []);
 
 	let locale = $state('nl');
-
 	$effect(() => {
-		try {
-			locale = getLocale();
-		} catch {
-			locale = 'nl';
-		}
+		try { locale = getLocale(); } catch { locale = 'nl'; }
 	});
 </script>
 
@@ -41,11 +41,11 @@
 		</div>
 
 		<div class="portfolio-grid">
-			{#each portfolioData as project}
+			{#each projects as project (project._id)}
 				<article class="project-card">
 					<div class="card-image">
 						{#if project.image}
-							<img src={project.image} alt={project.title} loading="lazy" />
+							<img src={urlFor(project.image).width(800).url()} alt={project.title} loading="lazy" />
 						{:else}
 							<div class="card-placeholder" aria-hidden="true">
 								<span class="placeholder-label">{project.title}</span>
@@ -57,11 +57,11 @@
 						<div class="card-top">
 							<span class="card-year">{project.year}</span>
 							<a
-								href={project.url}
+								href={project.url ?? '#'}
 								class="card-link"
 								aria-label="{project.title} {m.portfolio_view()}"
-								target={project.url !== '#' ? '_blank' : undefined}
-								rel={project.url !== '#' ? 'noopener noreferrer' : undefined}
+								target={project.url ? '_blank' : undefined}
+								rel={project.url ? 'noopener noreferrer' : undefined}
 							>
 								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
 									<line x1="7" y1="17" x2="17" y2="7"/>
@@ -73,11 +73,11 @@
 						<h2 class="card-title">{project.title}</h2>
 
 						<p class="card-desc">
-							{locale === 'en' ? project.description_en : project.description_nl}
+							{locale === 'en' ? (project.description_en ?? project.description_nl) : project.description_nl}
 						</p>
 
 						<div class="card-tags">
-							{#each project.tags as tag}
+							{#each (project.tags ?? []) as tag}
 								<span class="tag">{tag}</span>
 							{/each}
 						</div>
@@ -128,11 +128,10 @@
 		max-width: 480px;
 	}
 
-	/* Grid — same as homepage portfolio */
 	.portfolio-grid {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 1px;
+		gap: 0;
 		border: 1px solid var(--c-border-site);
 		border-radius: 8px;
 		overflow: hidden;
@@ -273,21 +272,21 @@
 	@media (min-width: 640px) {
 		.portfolio-grid { grid-template-columns: 1fr 1fr; }
 
-		.project-card {
-			border-bottom: none;
-			border-right: 1px solid var(--c-border-site);
-		}
-
-		.project-card:last-child { border-right: none; }
-		.project-card:nth-child(even) { border-right: none; }
-		.project-card:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--c-border-site); }
+		.project-card { border-right: 1px solid var(--c-border-site); }
+		.project-card:nth-child(2n) { border-right: none; }
+		.project-card:nth-last-child(-n+2) { border-bottom: none; }
+		.project-card:last-child { border-bottom: none; }
 	}
 
 	@media (min-width: 1024px) {
 		.portfolio-grid { grid-template-columns: repeat(3, 1fr); }
 
-		.project-card:nth-child(even) { border-right: 1px solid var(--c-border-site); }
+		.project-card:nth-child(2n) { border-right: 1px solid var(--c-border-site); }
+		.project-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--c-border-site); }
+		.project-card { border-right: 1px solid var(--c-border-site); border-bottom: 1px solid var(--c-border-site); }
 		.project-card:nth-child(3n) { border-right: none; }
+		.project-card:last-child:not(:nth-child(3n)) { border-right: none; }
+		.project-card:nth-last-child(-n+3) { border-bottom: none; }
 		.project-card:not(:nth-last-child(-n+3)) { border-bottom: 1px solid var(--c-border-site); }
 	}
 </style>

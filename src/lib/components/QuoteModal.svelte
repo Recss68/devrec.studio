@@ -121,7 +121,7 @@
 		step = Math.max(step - 1, 1);
 	}
 
-	function submit() {
+	async function submit() {
 		// Re-validate step 3 in case user navigated back
 		const e = validate(3);
 		if (Object.keys(e).length) { step = 3; errors = e; return; }
@@ -129,28 +129,30 @@
 		submitState = 'loading';
 
 		const serviceLabel = services.find((s) => s.key === selectedService)?.label ?? selectedService;
-		const meetingLine = wantsMeeting === true
-			? 'Ja — ingepland via Google Calendar'
-			: wantsMeeting === false ? 'Nee' : 'Niet aangegeven';
-
-		const subject = `Offerte aanvraag — ${serviceLabel}`;
-		const body = [
-			'DIENST', serviceLabel, '',
-			'BEDRIJF',
-			`Bedrijfsnaam: ${company}`,
-			`Website: ${website || '—'}`, '',
-			'WAT HEBBEN ZE NODIG', need, '',
-			`Budget: ${budget || '—'}`, '',
-			'CONTACTGEGEVENS',
-			`Naam: ${fullName}`,
-			`E-mail: ${email}`,
-			`Telefoon: ${phone || '—'}`, '',
-			'KENNISMAKINGSGESPREK', meetingLine
-		].join('\n');
 
 		try {
-			window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-			setTimeout(() => { submitState = 'success'; }, 700);
+			const res = await fetch('/api/quote', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					service: serviceLabel,
+					company,
+					website,
+					need,
+					budget,
+					fullName,
+					email,
+					phone,
+					wantsMeeting
+				})
+			});
+
+			if (!res.ok) {
+				submitState = 'error';
+				return;
+			}
+
+			submitState = 'success';
 		} catch {
 			submitState = 'error';
 		}

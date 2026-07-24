@@ -1,6 +1,13 @@
 <script>
 	import { Hero, About, Services, Process, Portfolio, Reviews, FAQ, Contact } from '$lib';
 	import { m } from '$lib/paraglide/messages.js';
+	import { useQuery } from '@sanity/sveltekit';
+
+	const { data } = $props();
+	const reviewsResult = $derived(useQuery(data.reviews));
+	const reviews = $derived($reviewsResult.data ?? []);
+	const projectsResult = $derived(useQuery(data.projects));
+	const projects = $derived($projectsResult.data ?? []);
 </script>
 
 <svelte:head>
@@ -23,8 +30,8 @@
 <About />
 <Services />
 <Process />
-<Portfolio />
-<Reviews />
+<Portfolio {projects} />
+<Reviews {reviews} />
 <FAQ />
 <Contact />
 
