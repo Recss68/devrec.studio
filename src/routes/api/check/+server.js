@@ -1,15 +1,37 @@
 import { json, error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
+const attempts = new Map();
+const MAX = 10;
+const WINDOW_MS = 60 * 60 * 1000;
+
+function isRateLimited(ip) {
+	const now = Date.now();
+	const entry = attempts.get(ip);
+	if (!entry || now - entry.start > WINDOW_MS) {
+		attempts.set(ip, { count: 1, start: now });
+		return false;
+	}
+	if (entry.count >= MAX) return true;
+	entry.count++;
+	return false;
+}
+
 const PSI_ERRORS = {
-	INVALID_URL: 'De URL is ongeldig. Controleer of je een correcte website URL hebt ingevoerd (bijv. https://jouwsite.nl).',
-	ERRORED_DOCUMENT_REQUEST: 'De website kon niet bereikt worden. Controleer of de URL correct en bereikbaar is.',
-	FAILED_DOCUMENT_REQUEST: 'De website kon niet bereikt worden. Mogelijk is de site offline of blokkeert hij externe verzoeken.',
+	INVALID_URL:
+		'De URL is ongeldig. Controleer of je een correcte website URL hebt ingevoerd (bijv. https://jouwsite.nl).',
+	ERRORED_DOCUMENT_REQUEST:
+		'De website kon niet bereikt worden. Controleer of de URL correct en bereikbaar is.',
+	FAILED_DOCUMENT_REQUEST:
+		'De website kon niet bereikt worden. Mogelijk is de site offline of blokkeert hij externe verzoeken.',
 	BLOCKED: 'De website blokkeert externe analyse. Probeer een andere URL.',
 	NOT_HTML: 'De URL verwijst niet naar een webpagina.'
 };
 
-export async function POST({ request }) {
+export async function POST({ request, getClientAddress }) {
+	if (isRateLimited(getClientAddress())) {
+		throw error(429, 'Te veel verzoeken. Probeer het later opnieuw.');
+	}
 	const body = await request.json().catch(() => null);
 	let raw = (body?.url ?? '').trim();
 
@@ -23,7 +45,10 @@ export async function POST({ request }) {
 	try {
 		parsed = new URL(raw);
 	} catch {
-		throw error(400, 'De URL is ongeldig. Controleer of je een correcte website URL hebt ingevoerd.');
+		throw error(
+			400,
+			'De URL is ongeldig. Controleer of je een correcte website URL hebt ingevoerd.'
+		);
 	}
 
 	const key = env.PAGESPEED_API_KEY ? `&key=${env.PAGESPEED_API_KEY}` : '';
@@ -49,7 +74,8 @@ export async function POST({ request }) {
 	if (!res.ok) {
 		const data = await res.json().catch(() => ({}));
 		const reason = data?.error?.errors?.[0]?.reason ?? '';
-		const msg = PSI_ERRORS[reason] ?? data?.error?.message ?? 'Er ging iets mis tijdens de analyse.';
+		const msg =
+			PSI_ERRORS[reason] ?? data?.error?.message ?? 'Er ging iets mis tijdens de analyse.';
 		throw error(res.status >= 500 ? 503 : 400, msg);
 	}
 

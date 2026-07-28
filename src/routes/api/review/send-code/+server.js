@@ -3,8 +3,32 @@ import { Resend } from 'resend';
 import { json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 
+const attempts = new Map();
+const MAX_ATTEMPTS = 3;
+const WINDOW_MS = 15 * 60 * 1000;
+
+function isRateLimited(ip) {
+	const now = Date.now();
+	const entry = attempts.get(ip);
+	if (!entry || now - entry.start > WINDOW_MS) {
+		attempts.set(ip, { count: 1, start: now });
+		return false;
+	}
+	if (entry.count >= MAX_ATTEMPTS) return true;
+	entry.count++;
+	return false;
+}
+
 /** @type {import('./$types').RequestHandler} */
-export async function POST({ request }) {
+export async function POST({ request, getClientAddress }) {
+	const ip = getClientAddress();
+	if (isRateLimited(ip)) {
+		return json(
+			{ error: 'Te veel pogingen. Probeer het over 15 minuten opnieuw.' },
+			{ status: 429 }
+		);
+	}
+
 	const { email } = await request.json();
 
 	const trimmed = (email ?? '').trim().toLowerCase();

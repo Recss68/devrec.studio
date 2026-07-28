@@ -1,8 +1,28 @@
 import { json, error } from '@sveltejs/kit';
 import { Resend } from 'resend';
 import { env } from '$env/dynamic/private';
+import { escapeHtml } from '$lib/server/email.js';
 
-export async function POST({ request }) {
+const attempts = new Map();
+const MAX = 5;
+const WINDOW_MS = 60 * 60 * 1000;
+
+function isRateLimited(ip) {
+	const now = Date.now();
+	const entry = attempts.get(ip);
+	if (!entry || now - entry.start > WINDOW_MS) {
+		attempts.set(ip, { count: 1, start: now });
+		return false;
+	}
+	if (entry.count >= MAX) return true;
+	entry.count++;
+	return false;
+}
+
+export async function POST({ request, getClientAddress }) {
+	if (isRateLimited(getClientAddress())) {
+		throw error(429, 'Te veel verzoeken. Probeer het later opnieuw.');
+	}
 	const body = await request.json().catch(() => null);
 	const { name, email, message } = body ?? {};
 
@@ -27,15 +47,15 @@ export async function POST({ request }) {
 				<table style="width:100%;border-collapse:collapse;">
 					<tr>
 						<td style="padding:10px 0;border-bottom:1px solid #eee;width:120px;color:#666;font-size:14px;">Naam</td>
-						<td style="padding:10px 0;border-bottom:1px solid #eee;font-size:14px;">${name.trim()}</td>
+						<td style="padding:10px 0;border-bottom:1px solid #eee;font-size:14px;">${escapeHtml(name.trim())}</td>
 					</tr>
 					<tr>
 						<td style="padding:10px 0;border-bottom:1px solid #eee;color:#666;font-size:14px;">E-mail</td>
-						<td style="padding:10px 0;border-bottom:1px solid #eee;font-size:14px;">${email.trim()}</td>
+						<td style="padding:10px 0;border-bottom:1px solid #eee;font-size:14px;">${escapeHtml(email.trim())}</td>
 					</tr>
 					<tr>
 						<td style="padding:10px 16px 10px 0;color:#666;font-size:14px;vertical-align:top;">Bericht</td>
-						<td style="padding:10px 0;font-size:14px;white-space:pre-wrap;">${message.trim()}</td>
+						<td style="padding:10px 0;font-size:14px;white-space:pre-wrap;">${escapeHtml(message.trim())}</td>
 					</tr>
 				</table>
 				<p style="margin:24px 0 0;font-size:12px;color:#999;">Verzonden via devrec.nl</p>
