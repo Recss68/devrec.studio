@@ -23,22 +23,30 @@
 
 		<div class="legal-content">
 			<h2>1. Wie zijn wij?</h2>
-			<p>devrec is een eenmanszaak gevestigd in Amsterdam. Bereikbaar via <a href="mailto:recep@devrec.nl">recep@devrec.nl</a>.</p>
+			<p>
+				DevRec is een eenmanszaak gevestigd in Amsterdam.<br />
+				KVK-nummer: 90301447<br />
+				E-mail: <a href="mailto:info@devrec.nl">info@devrec.nl</a><br />
+				Telefoon: <a href="tel:+31643859686">+31 6 43 85 96 86</a>
+			</p>
 
 			<h2>2. Welke gegevens verzamelen wij?</h2>
-			<p>Wanneer je contact opneemt via het contactformulier, verzamelen wij je naam, e-mailadres en het bericht dat je stuurt. We verzamelen geen andere persoonsgegevens tenzij je deze zelf verstrekt.</p>
+			<p>Wanneer je het contactformulier invult, ontvangen wij je naam, e-mailadres en het bericht dat je stuurt. Deze gegevens worden niet opgeslagen in een database; ze komen rechtstreeks als e-mail bij ons binnen. We verzamelen geen andere persoonsgegevens tenzij je deze zelf verstrekt.</p>
 
-			<h2>3. Waarom verzamelen wij deze gegevens?</h2>
-			<p>Wij gebruiken jouw gegevens uitsluitend om contact met je op te nemen naar aanleiding van jouw vraag of opdracht.</p>
+			<h2>3. Waarom verwerken wij deze gegevens?</h2>
+			<p>Wij gebruiken jouw gegevens uitsluitend om te reageren op jouw vraag of opdracht. We sturen geen nieuwsbrieven en gebruiken je gegevens niet voor marketingdoeleinden.</p>
 
 			<h2>4. Cookies</h2>
-			<p>Onze website maakt gebruik van cookies voor een betere gebruikerservaring en om websitebezoeken te analyseren. Je kunt cookies accepteren of weigeren bij het eerste bezoek.</p>
+			<p>Onze website maakt gebruik van functionele cookies om je cookievoorkeur te onthouden. We gebruiken geen tracking- of analytische cookies en delen geen gegevens met advertentienetwerken.</p>
 
-			<h2>5. Jouw rechten</h2>
-			<p>Je hebt het recht om je gegevens in te zien, te corrigeren of te laten verwijderen. Neem contact op via <a href="mailto:recep@devrec.nl">recep@devrec.nl</a>.</p>
+			<h2>5. Gegevens delen met derden</h2>
+			<p>Wij verkopen of verstrekken je persoonsgegevens niet aan derden, tenzij dit noodzakelijk is voor de uitvoering van een opdracht of wettelijk verplicht is.</p>
 
-			<h2>6. Contact</h2>
-			<p>Vragen over deze privacyverklaring? Stuur een e-mail naar <a href="mailto:recep@devrec.nl">recep@devrec.nl</a>.</p>
+			<h2>6. Jouw rechten</h2>
+			<p>Je hebt het recht om je gegevens in te zien, te corrigeren of te laten verwijderen. Stuur hiervoor een e-mail naar <a href="mailto:info@devrec.nl">info@devrec.nl</a>. We reageren binnen een maand.</p>
+
+			<h2>7. Contact</h2>
+			<p>Vragen over deze privacyverklaring? Neem contact op via <a href="mailto:info@devrec.nl">info@devrec.nl</a> of <a href="tel:+31643859686">+31 6 43 85 96 86</a>.</p>
 		</div>
 	</div>
 </section>
