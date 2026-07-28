@@ -10,7 +10,11 @@
 
 	let locale = $state('nl');
 	$effect(() => {
-		try { locale = getLocale(); } catch { locale = 'nl'; }
+		try {
+			locale = getLocale();
+		} catch {
+			locale = 'nl';
+		}
 	});
 </script>
 
@@ -25,11 +29,18 @@
 
 <div class="portfolio-page section">
 	<div class="section-inner">
-
 		<a href="/" class="back-link">
-			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-				<line x1="19" y1="12" x2="5" y2="12"/>
-				<polyline points="12 19 5 12 12 5"/>
+			<svg
+				width="14"
+				height="14"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
+				<line x1="19" y1="12" x2="5" y2="12" />
+				<polyline points="12 19 5 12 12 5" />
 			</svg>
 			{m.portfolio_back()}
 		</a>
@@ -45,7 +56,11 @@
 				<article class="project-card">
 					<div class="card-image">
 						{#if project.image}
-							<img src={urlFor(project.image).width(800).url()} alt={project.title} loading="lazy" />
+							<img
+								src={urlFor(project.image).width(800).url()}
+								alt={project.title}
+								loading="lazy"
+							/>
 						{:else}
 							<div class="card-placeholder" aria-hidden="true">
 								<span class="placeholder-label">{project.title}</span>
@@ -63,9 +78,17 @@
 								target={project.url ? '_blank' : undefined}
 								rel={project.url ? 'noopener noreferrer' : undefined}
 							>
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-									<line x1="7" y1="17" x2="17" y2="7"/>
-									<polyline points="7 7 17 7 17 17"/>
+								<svg
+									width="14"
+									height="14"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									aria-hidden="true"
+								>
+									<line x1="7" y1="17" x2="17" y2="7" />
+									<polyline points="7 7 17 7 17 17" />
 								</svg>
 							</a>
 						</div>
@@ -73,11 +96,13 @@
 						<h2 class="card-title">{project.title}</h2>
 
 						<p class="card-desc">
-							{locale === 'en' ? (project.description_en ?? project.description_nl) : project.description_nl}
+							{locale === 'en'
+								? (project.description_en ?? project.description_nl)
+								: project.description_nl}
 						</p>
 
 						<div class="card-tags">
-							{#each (project.tags ?? []) as tag}
+							{#each project.tags ?? [] as tag}
 								<span class="tag">{tag}</span>
 							{/each}
 						</div>
@@ -85,7 +110,6 @@
 				</article>
 			{/each}
 		</div>
-
 	</div>
 </div>
 
@@ -106,7 +130,9 @@
 		transition: color 0.15s;
 	}
 
-	.back-link:hover { color: var(--c-fg); }
+	.back-link:hover {
+		color: var(--c-fg);
+	}
 
 	.page-head {
 		margin-bottom: clamp(2.5rem, 5vw, 4rem);
@@ -146,8 +172,12 @@
 		flex-direction: column;
 	}
 
-	.project-card:last-child { border-bottom: none; }
-	.project-card:hover { background: var(--c-bg-alt); }
+	.project-card:last-child {
+		border-bottom: none;
+	}
+	.project-card:hover {
+		background: var(--c-bg-alt);
+	}
 
 	.card-image {
 		width: 100%;
@@ -203,7 +233,10 @@
 		border-radius: 4px;
 	}
 
-	.card-body { padding: 1.5rem; flex: 1; }
+	.card-body {
+		padding: 1.5rem;
+		flex: 1;
+	}
 
 	.card-top {
 		display: flex;
@@ -229,7 +262,9 @@
 		border: 1px solid var(--c-border-site);
 		border-radius: 6px;
 		color: var(--c-fg-muted);
-		transition: color 0.15s ease, border-color 0.15s ease;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
 	}
 
 	.card-link:hover {
@@ -271,23 +306,50 @@
 	}
 
 	@media (min-width: 640px) {
-		.portfolio-grid { grid-template-columns: 1fr 1fr; }
+		.portfolio-grid {
+			grid-template-columns: 1fr 1fr;
+		}
 
-		.project-card { border-right: 1px solid var(--c-border-site); }
-		.project-card:nth-child(2n) { border-right: none; }
-		.project-card:nth-last-child(-n+2) { border-bottom: none; }
-		.project-card:last-child { border-bottom: none; }
+		.project-card {
+			border-right: 1px solid var(--c-border-site);
+		}
+		.project-card:nth-child(2n) {
+			border-right: none;
+		}
+		.project-card:nth-last-child(-n + 2) {
+			border-bottom: none;
+		}
+		.project-card:last-child {
+			border-bottom: none;
+		}
 	}
 
 	@media (min-width: 1024px) {
-		.portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+		.portfolio-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
 
-		.project-card:nth-child(2n) { border-right: 1px solid var(--c-border-site); }
-		.project-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--c-border-site); }
-		.project-card { border-right: 1px solid var(--c-border-site); border-bottom: 1px solid var(--c-border-site); }
-		.project-card:nth-child(3n) { border-right: none; }
-		.project-card:last-child:not(:nth-child(3n)) { border-right: none; }
-		.project-card:nth-last-child(-n+3) { border-bottom: none; }
-		.project-card:not(:nth-last-child(-n+3)) { border-bottom: 1px solid var(--c-border-site); }
+		.project-card:nth-child(2n) {
+			border-right: 1px solid var(--c-border-site);
+		}
+		.project-card:nth-last-child(-n + 2) {
+			border-bottom: 1px solid var(--c-border-site);
+		}
+		.project-card {
+			border-right: 1px solid var(--c-border-site);
+			border-bottom: 1px solid var(--c-border-site);
+		}
+		.project-card:nth-child(3n) {
+			border-right: none;
+		}
+		.project-card:last-child:not(:nth-child(3n)) {
+			border-right: none;
+		}
+		.project-card:nth-last-child(-n + 3) {
+			border-bottom: none;
+		}
+		.project-card:not(:nth-last-child(-n + 3)) {
+			border-bottom: 1px solid var(--c-border-site);
+		}
 	}
 </style>

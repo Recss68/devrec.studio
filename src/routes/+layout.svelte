@@ -19,7 +19,6 @@
 	<link rel="icon" href={favicon} />
 	<link rel="canonical" href={page.url.href} />
 
-	<!-- Open Graph (structureel — titels/descriptions staan per pagina) -->
 	<meta property="og:site_name" content={siteName} />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content={page.url.href} />
@@ -27,8 +26,6 @@
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:locale" content="nl_NL" />
-
-	<!-- Twitter / X -->
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content={ogImage} />
 </svelte:head>

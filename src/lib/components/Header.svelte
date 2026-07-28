@@ -9,10 +9,8 @@
 	let scrolled = $state(false);
 
 	onMount(() => {
-		// Read what app.html's inline script already applied — avoids duplicate logic
-		theme = (document.documentElement.getAttribute('data-theme') ?? 'light');
+		theme = document.documentElement.getAttribute('data-theme') ?? 'light';
 
-		// Follow OS preference changes live (only when user has no manual override)
 		const mql = window.matchMedia('(prefers-color-scheme: dark)');
 		const onSystemChange = (e) => {
 			if (!localStorage.getItem('devrec-theme')) {
@@ -111,11 +109,27 @@
 				aria-label={theme === 'light' ? 'Schakel naar donker thema' : 'Schakel naar licht thema'}
 			>
 				{#if theme === 'light'}
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
 						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
 					</svg>
 				{:else}
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
 						<circle cx="12" cy="12" r="5" />
 						<line x1="12" y1="1" x2="12" y2="3" />
 						<line x1="12" y1="21" x2="12" y2="23" />
@@ -136,12 +150,28 @@
 				aria-expanded={menuOpen}
 			>
 				{#if menuOpen}
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<svg
+						width="22"
+						height="22"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
 						<line x1="18" y1="6" x2="6" y2="18" />
 						<line x1="6" y1="6" x2="18" y2="18" />
 					</svg>
 				{:else}
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<svg
+						width="22"
+						height="22"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
 						<line x1="3" y1="6" x2="21" y2="6" />
 						<line x1="3" y1="12" x2="21" y2="12" />
 						<line x1="3" y1="18" x2="21" y2="18" />
@@ -164,7 +194,15 @@
 			devrec<span class="logo-dot">.</span>
 		</a>
 		<button class="mobile-close-btn" onclick={closeMenu} aria-label="Menu sluiten">
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+			<svg
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
 				<line x1="18" y1="6" x2="6" y2="18" />
 				<line x1="6" y1="6" x2="18" y2="18" />
 			</svg>
@@ -191,27 +229,28 @@
 			<button
 				class="mobile-lang-btn"
 				class:active={locale === 'nl'}
-				onclick={() => { switchLocale('nl'); closeMenu(); }}
-				tabindex={menuOpen ? 0 : -1}
-			>NL</button>
+				onclick={() => {
+					switchLocale('nl');
+					closeMenu();
+				}}
+				tabindex={menuOpen ? 0 : -1}>NL</button
+			>
 			<span aria-hidden="true">/</span>
 			<button
 				class="mobile-lang-btn"
 				class:active={locale === 'en'}
-				onclick={() => { switchLocale('en'); closeMenu(); }}
-				tabindex={menuOpen ? 0 : -1}
-			>EN</button>
+				onclick={() => {
+					switchLocale('en');
+					closeMenu();
+				}}
+				tabindex={menuOpen ? 0 : -1}>EN</button
+			>
 		</div>
 	</div>
 </nav>
 
 <!-- Backdrop -->
-<div
-	class="nav-backdrop"
-	class:visible={menuOpen}
-	onclick={closeMenu}
-	aria-hidden="true"
-></div>
+<div class="nav-backdrop" class:visible={menuOpen} onclick={closeMenu} aria-hidden="true"></div>
 
 <style>
 	header {
@@ -224,7 +263,9 @@
 		backdrop-filter: blur(12px);
 		-webkit-backdrop-filter: blur(12px);
 		border-bottom: 1px solid transparent;
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
 	header.scrolled {
@@ -321,7 +362,9 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: 6px;
-		transition: color 0.15s ease, background 0.15s ease;
+		transition:
+			color 0.15s ease,
+			background 0.15s ease;
 	}
 
 	.theme-btn:hover {
@@ -434,7 +477,9 @@
 		color: var(--c-fg);
 		padding: 0.6rem 0;
 		line-height: 1.15;
-		transition: color 0.15s ease, padding-left 0.15s ease;
+		transition:
+			color 0.15s ease,
+			padding-left 0.15s ease;
 	}
 
 	.mobile-nav-link:hover {

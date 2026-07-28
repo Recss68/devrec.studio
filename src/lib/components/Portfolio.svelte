@@ -27,7 +27,11 @@
 				<article class="project-card">
 					<div class="card-image">
 						{#if project.image}
-							<img src={urlFor(project.image).width(800).url()} alt={project.title} loading="lazy" />
+							<img
+								src={urlFor(project.image).width(800).url()}
+								alt={project.title}
+								loading="lazy"
+							/>
 						{:else}
 							<div class="card-placeholder" aria-hidden="true">
 								<span class="placeholder-label">{project.title}</span>
@@ -45,9 +49,17 @@
 								target={project.url ? '_blank' : undefined}
 								rel={project.url ? 'noopener noreferrer' : undefined}
 							>
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-									<line x1="7" y1="17" x2="17" y2="7"/>
-									<polyline points="7 7 17 7 17 17"/>
+								<svg
+									width="14"
+									height="14"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									aria-hidden="true"
+								>
+									<line x1="7" y1="17" x2="17" y2="7" />
+									<polyline points="7 7 17 7 17 17" />
 								</svg>
 							</a>
 						</div>
@@ -55,11 +67,13 @@
 						<h3 class="card-title">{project.title}</h3>
 
 						<p class="card-desc">
-							{locale === 'en' ? (project.description_en ?? project.description_nl) : project.description_nl}
+							{locale === 'en'
+								? (project.description_en ?? project.description_nl)
+								: project.description_nl}
 						</p>
 
 						<div class="card-tags">
-							{#each (project.tags ?? []) as tag}
+							{#each project.tags ?? [] as tag}
 								<span class="tag">{tag}</span>
 							{/each}
 						</div>
@@ -71,9 +85,17 @@
 		<div class="portfolio-footer">
 			<a href="/portfolio" class="portfolio-view-all">
 				{m.portfolio_view_all()}
-				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-					<line x1="5" y1="12" x2="19" y2="12"/>
-					<polyline points="12 5 19 12 12 19"/>
+				<svg
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					aria-hidden="true"
+				>
+					<line x1="5" y1="12" x2="19" y2="12" />
+					<polyline points="12 5 19 12 12 19" />
 				</svg>
 			</a>
 		</div>
@@ -208,7 +230,9 @@
 		border: 1px solid var(--c-border-site);
 		border-radius: 6px;
 		color: var(--c-fg-muted);
-		transition: color 0.15s ease, border-color 0.15s ease;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
 	}
 
 	.card-link:hover {
@@ -286,7 +310,7 @@
 		}
 
 		/* Remove bottom border on last row (last 2 cards) */
-		.project-card:nth-last-child(-n+2) {
+		.project-card:nth-last-child(-n + 2) {
 			border-bottom: none;
 		}
 
@@ -306,7 +330,7 @@
 			border-right: 1px solid var(--c-border-site);
 		}
 
-		.project-card:nth-last-child(-n+2) {
+		.project-card:nth-last-child(-n + 2) {
 			border-bottom: 1px solid var(--c-border-site);
 		}
 
@@ -326,12 +350,12 @@
 		}
 
 		/* Remove bottom border on cards in last row */
-		.project-card:nth-last-child(-n+3) {
+		.project-card:nth-last-child(-n + 3) {
 			border-bottom: none;
 		}
 
 		/* Restore bottom border for cards not in last row that may have been reset */
-		.project-card:not(:nth-last-child(-n+3)) {
+		.project-card:not(:nth-last-child(-n + 3)) {
 			border-bottom: 1px solid var(--c-border-site);
 		}
 	}

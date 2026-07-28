@@ -4,9 +4,16 @@
 	import { onMount } from 'svelte';
 
 	const EMAIL = 'recep@devrec.nl';
-	const CALENDAR_EMBED_URL = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2B17LOTJgvV0oY47byZDnoYXsVWE6-H0O5PqyaDIlftNdvCHFTFupV8uTXb0uktESDgRCDzfOS?gv=true';
+	const CALENDAR_EMBED_URL =
+		'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2B17LOTJgvV0oY47byZDnoYXsVWE6-H0O5PqyaDIlftNdvCHFTFupV8uTXb0uktESDgRCDzfOS?gv=true';
 
-	const BUDGET_OPTIONS = ['< €500', '€500 – €1.500', '€1.500 – €5.000', '€5.000 – €15.000', '> €15.000'];
+	const BUDGET_OPTIONS = [
+		'< €500',
+		'€500 – €1.500',
+		'€1.500 – €5.000',
+		'€5.000 – €15.000',
+		'> €15.000'
+	];
 	const TOTAL_STEPS = 4;
 
 	let step = $state(1);
@@ -68,15 +75,27 @@
 	onMount(() => {
 		function onKeydown(e) {
 			if (!$quoteOpen) return;
-			if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+			if (e.key === 'Escape') {
+				e.preventDefault();
+				close();
+				return;
+			}
 			if (e.key === 'Tab' && modalEl) {
-				const nodes = [...modalEl.querySelectorAll(
-					'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled])'
-				)];
+				const nodes = [
+					...modalEl.querySelectorAll(
+						'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled])'
+					)
+				];
 				if (!nodes.length) return;
-				const first = nodes[0], last = nodes[nodes.length - 1];
-				if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-				else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+				const first = nodes[0],
+					last = nodes[nodes.length - 1];
+				if (e.shiftKey && document.activeElement === first) {
+					e.preventDefault();
+					last.focus();
+				} else if (!e.shiftKey && document.activeElement === last) {
+					e.preventDefault();
+					first.focus();
+				}
 			}
 		}
 		document.addEventListener('keydown', onKeydown);
@@ -89,9 +108,17 @@
 	}
 
 	function reset() {
-		step = 1; submitState = 'idle'; errors = {};
-		selectedService = ''; company = ''; website = ''; need = ''; budget = '';
-		fullName = ''; email = ''; phone = '';
+		step = 1;
+		submitState = 'idle';
+		errors = {};
+		selectedService = '';
+		company = '';
+		website = '';
+		need = '';
+		budget = '';
+		fullName = '';
+		email = '';
+		phone = '';
 		wantsMeeting = null;
 	}
 
@@ -104,14 +131,18 @@
 		}
 		if (s === 3) {
 			if (!fullName.trim()) e.name = m.quote_err_name();
-			if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) e.email = m.quote_err_email();
+			if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
+				e.email = m.quote_err_email();
 		}
 		return e;
 	}
 
 	function next() {
 		const e = validate(step);
-		if (Object.keys(e).length) { errors = e; return; }
+		if (Object.keys(e).length) {
+			errors = e;
+			return;
+		}
 		errors = {};
 		step = Math.min(step + 1, TOTAL_STEPS);
 	}
@@ -124,7 +155,11 @@
 	async function submit() {
 		// Re-validate step 3 in case user navigated back
 		const e = validate(3);
-		if (Object.keys(e).length) { step = 3; errors = e; return; }
+		if (Object.keys(e).length) {
+			step = 3;
+			errors = e;
+			return;
+		}
 
 		submitState = 'loading';
 
@@ -173,8 +208,16 @@
 		<div class="modal-header">
 			<span id="modal-title" class="modal-title-text">{m.quote_modal_title()}</span>
 			<button class="close-btn" onclick={close} aria-label={m.quote_close()}>
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-					<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+				<svg
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					aria-hidden="true"
+				>
+					<line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
 				</svg>
 			</button>
 		</div>
@@ -186,7 +229,14 @@
 					<div class="step-item" class:is-active={step === i + 1} class:is-done={step > i + 1}>
 						<div class="step-num" aria-hidden="true">
 							{#if step > i + 1}
-								<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+								<svg
+									width="10"
+									height="10"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg
+								>
 							{:else}
 								{i + 1}
 							{/if}
@@ -202,13 +252,19 @@
 
 		<!-- Body -->
 		<div class="modal-body">
-
 			<!-- ── Success ── -->
 			{#if submitState === 'success'}
 				<div class="state-screen">
 					<div class="state-icon state-icon-success" aria-hidden="true">
-						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/>
+						<svg
+							width="26"
+							height="26"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<circle cx="12" cy="12" r="10" /><polyline points="9 12 11 14 15 10" />
 						</svg>
 					</div>
 					<h2 class="state-title">{m.quote_success_title()}</h2>
@@ -229,23 +285,40 @@
 					<button class="btn-close-success" onclick={close}>{m.quote_close()}</button>
 				</div>
 
-			<!-- ── Error ── -->
+				<!-- ── Error ── -->
 			{:else if submitState === 'error'}
 				<div class="state-screen">
 					<div class="state-icon state-icon-error" aria-hidden="true">
-						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+						<svg
+							width="26"
+							height="26"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line
+								x1="9"
+								y1="9"
+								x2="15"
+								y2="15"
+							/>
 						</svg>
 					</div>
 					<h2 class="state-title">{m.quote_error_title()}</h2>
 					<p class="state-sub">{m.quote_error_sub()}</p>
 					<div class="error-actions">
 						<a href="mailto:{EMAIL}" class="btn-primary-action">{m.quote_error_email_btn()}</a>
-						<button class="btn-ghost" onclick={() => { submitState = 'idle'; }}>{m.quote_error_retry()}</button>
+						<button
+							class="btn-ghost"
+							onclick={() => {
+								submitState = 'idle';
+							}}>{m.quote_error_retry()}</button
+						>
 					</div>
 				</div>
 
-			<!-- ── Step 1: Service ── -->
+				<!-- ── Step 1: Service ── -->
 			{:else if step === 1}
 				<div class="step-content">
 					<h2 class="step-heading">{m.quote_s1_heading()}</h2>
@@ -260,14 +333,24 @@
 							<button
 								class="service-card"
 								class:is-selected={selectedService === svc.key}
-								onclick={() => { selectedService = svc.key; errors = {}; }}
+								onclick={() => {
+									selectedService = svc.key;
+									errors = {};
+								}}
 								type="button"
 							>
 								<span class="svc-num" aria-hidden="true">0{i + 1}</span>
 								<span class="svc-label">{svc.label}</span>
 								<span class="svc-check" aria-hidden="true">
 									{#if selectedService === svc.key}
-										<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+										<svg
+											width="12"
+											height="12"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="3"><polyline points="20 6 9 17 4 12" /></svg
+										>
 									{/if}
 								</span>
 							</button>
@@ -275,7 +358,7 @@
 					</div>
 				</div>
 
-			<!-- ── Step 2: Company ── -->
+				<!-- ── Step 2: Company ── -->
 			{:else if step === 2}
 				<div class="step-content">
 					<h2 class="step-heading">{m.quote_s2_heading()}</h2>
@@ -283,16 +366,21 @@
 
 					<div class="fields">
 						<div class="field">
-							<label for="q-company">{m.quote_s2_company()} <span class="req" aria-hidden="true">*</span></label>
+							<label for="q-company"
+								>{m.quote_s2_company()} <span class="req" aria-hidden="true">*</span></label
+							>
 							<input
 								id="q-company"
 								type="text"
 								bind:value={company}
 								class:is-invalid={errors.company}
 								autocomplete="organization"
-								oninput={() => { if (errors.company) errors = { ...errors, company: '' }; }}
+								oninput={() => {
+									if (errors.company) errors = { ...errors, company: '' };
+								}}
 							/>
-							{#if errors.company}<span class="field-error" role="alert">{errors.company}</span>{/if}
+							{#if errors.company}<span class="field-error" role="alert">{errors.company}</span
+								>{/if}
 						</div>
 
 						<div class="field">
@@ -307,14 +395,18 @@
 						</div>
 
 						<div class="field">
-							<label for="q-need">{m.quote_s2_need()} <span class="req" aria-hidden="true">*</span></label>
+							<label for="q-need"
+								>{m.quote_s2_need()} <span class="req" aria-hidden="true">*</span></label
+							>
 							<textarea
 								id="q-need"
 								bind:value={need}
 								rows="4"
 								placeholder={m.quote_s2_need_ph()}
 								class:is-invalid={errors.need}
-								oninput={() => { if (errors.need) errors = { ...errors, need: '' }; }}
+								oninput={() => {
+									if (errors.need) errors = { ...errors, need: '' };
+								}}
 							></textarea>
 							{#if errors.need}<span class="field-error" role="alert">{errors.need}</span>{/if}
 						</div>
@@ -331,7 +423,7 @@
 					</div>
 				</div>
 
-			<!-- ── Step 3: Contact ── -->
+				<!-- ── Step 3: Contact ── -->
 			{:else if step === 3}
 				<div class="step-content">
 					<h2 class="step-heading">{m.quote_s3_heading()}</h2>
@@ -339,44 +431,47 @@
 
 					<div class="fields">
 						<div class="field">
-							<label for="q-name">{m.quote_s3_name()} <span class="req" aria-hidden="true">*</span></label>
+							<label for="q-name"
+								>{m.quote_s3_name()} <span class="req" aria-hidden="true">*</span></label
+							>
 							<input
 								id="q-name"
 								type="text"
 								bind:value={fullName}
 								class:is-invalid={errors.name}
 								autocomplete="name"
-								oninput={() => { if (errors.name) errors = { ...errors, name: '' }; }}
+								oninput={() => {
+									if (errors.name) errors = { ...errors, name: '' };
+								}}
 							/>
 							{#if errors.name}<span class="field-error" role="alert">{errors.name}</span>{/if}
 						</div>
 
 						<div class="field">
-							<label for="q-email">{m.quote_s3_email()} <span class="req" aria-hidden="true">*</span></label>
+							<label for="q-email"
+								>{m.quote_s3_email()} <span class="req" aria-hidden="true">*</span></label
+							>
 							<input
 								id="q-email"
 								type="email"
 								bind:value={email}
 								class:is-invalid={errors.email}
 								autocomplete="email"
-								oninput={() => { if (errors.email) errors = { ...errors, email: '' }; }}
+								oninput={() => {
+									if (errors.email) errors = { ...errors, email: '' };
+								}}
 							/>
 							{#if errors.email}<span class="field-error" role="alert">{errors.email}</span>{/if}
 						</div>
 
 						<div class="field">
 							<label for="q-phone">{m.quote_s3_phone()}</label>
-							<input
-								id="q-phone"
-								type="tel"
-								bind:value={phone}
-								autocomplete="tel"
-							/>
+							<input id="q-phone" type="tel" bind:value={phone} autocomplete="tel" />
 						</div>
 					</div>
 				</div>
 
-			<!-- ── Step 4: Meeting ── -->
+				<!-- ── Step 4: Meeting ── -->
 			{:else if step === 4}
 				<div class="step-content">
 					<h2 class="step-heading">{m.quote_s4_heading()}</h2>
@@ -428,8 +523,16 @@
 			<div class="modal-footer">
 				{#if step > 1}
 					<button class="btn-back" onclick={back} disabled={submitState === 'loading'}>
-						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-							<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
+							<line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
 						</svg>
 						{m.quote_back()}
 					</button>
@@ -440,8 +543,16 @@
 				{#if step < TOTAL_STEPS}
 					<button class="btn-next" onclick={next}>
 						{m.quote_next()}
-						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-							<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
+							<line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
 						</svg>
 					</button>
 				{:else}
@@ -472,7 +583,14 @@
 		background: rgba(0, 0, 0, 0.72);
 	}
 
-	@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 
 	/* Modal */
 	.modal {
@@ -501,15 +619,27 @@
 	}
 
 	@keyframes modal-in {
-		from { opacity: 0; transform: translate(-50%, calc(-50% + 16px)) scale(0.97); }
-		to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+		from {
+			opacity: 0;
+			transform: translate(-50%, calc(-50% + 16px)) scale(0.97);
+		}
+		to {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1);
+		}
 	}
 
 	/* On mobile, slide up from bottom */
 	@media (max-width: 599px) {
 		@keyframes modal-in {
-			from { opacity: 0; transform: translateY(24px); }
-			to   { opacity: 1; transform: translateY(0); }
+			from {
+				opacity: 0;
+				transform: translateY(24px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
 		}
 	}
 
@@ -542,11 +672,16 @@
 		background: none;
 		color: var(--c-fg-muted);
 		cursor: pointer;
-		transition: color 0.15s, border-color 0.15s;
+		transition:
+			color 0.15s,
+			border-color 0.15s;
 		flex-shrink: 0;
 	}
 
-	.close-btn:hover { color: var(--c-fg); border-color: var(--c-fg); }
+	.close-btn:hover {
+		color: var(--c-fg);
+		border-color: var(--c-fg);
+	}
 
 	/* Step track */
 	.step-track {
@@ -560,7 +695,9 @@
 		scrollbar-width: none;
 	}
 
-	.step-track::-webkit-scrollbar { display: none; }
+	.step-track::-webkit-scrollbar {
+		display: none;
+	}
 
 	.step-item {
 		display: flex;
@@ -619,7 +756,9 @@
 		transition: background 0.2s;
 	}
 
-	.step-line.is-done { background: var(--c-fg); }
+	.step-line.is-done {
+		background: var(--c-fg);
+	}
 
 	/* Body */
 	.modal-body {
@@ -648,8 +787,14 @@
 		margin-bottom: 0.5rem;
 	}
 
-	.state-icon-success { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
-	.state-icon-error   { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+	.state-icon-success {
+		background: rgba(34, 197, 94, 0.1);
+		color: #22c55e;
+	}
+	.state-icon-error {
+		background: rgba(239, 68, 68, 0.1);
+		color: #ef4444;
+	}
 
 	.state-title {
 		font-family: var(--font-heading);
@@ -684,10 +829,15 @@
 		font-family: var(--font-body);
 		color: var(--c-fg-muted);
 		cursor: pointer;
-		transition: border-color 0.15s, color 0.15s;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
 	}
 
-	.btn-close-success:hover { border-color: var(--c-fg); color: var(--c-fg); }
+	.btn-close-success:hover {
+		border-color: var(--c-fg);
+		color: var(--c-fg);
+	}
 
 	.error-actions {
 		display: flex;
@@ -711,7 +861,9 @@
 		transition: opacity 0.15s;
 	}
 
-	.btn-primary-action:hover { opacity: 0.82; }
+	.btn-primary-action:hover {
+		opacity: 0.82;
+	}
 
 	.btn-ghost {
 		background: none;
@@ -723,13 +875,22 @@
 		font-family: var(--font-body);
 		color: var(--c-fg-muted);
 		cursor: pointer;
-		transition: border-color 0.15s, color 0.15s;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
 	}
 
-	.btn-ghost:hover { border-color: var(--c-fg); color: var(--c-fg); }
+	.btn-ghost:hover {
+		border-color: var(--c-fg);
+		color: var(--c-fg);
+	}
 
 	/* Step content */
-	.step-content { display: flex; flex-direction: column; gap: 1.25rem; }
+	.step-content {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
 
 	.step-heading {
 		font-family: var(--font-heading);
@@ -765,12 +926,17 @@
 		border-radius: 10px;
 		cursor: pointer;
 		text-align: left;
-		transition: border-color 0.15s, background 0.15s;
+		transition:
+			border-color 0.15s,
+			background 0.15s;
 		font-family: var(--font-body);
 		position: relative;
 	}
 
-	.service-card:hover { border-color: var(--c-fg); background: var(--c-bg-alt); }
+	.service-card:hover {
+		border-color: var(--c-fg);
+		background: var(--c-bg-alt);
+	}
 
 	.service-card.is-selected {
 		border-color: var(--c-fg);
@@ -807,7 +973,9 @@
 		transition: opacity 0.15s;
 	}
 
-	.service-card.is-selected .svc-check { opacity: 1; }
+	.service-card.is-selected .svc-check {
+		opacity: 1;
+	}
 
 	/* Fields */
 	.fields {
@@ -821,7 +989,9 @@
 		gap: 0.75rem;
 	}
 
-	.fields-row .field { flex: 1; }
+	.fields-row .field {
+		flex: 1;
+	}
 
 	.field {
 		display: flex;
@@ -837,7 +1007,9 @@
 		color: var(--c-fg-muted);
 	}
 
-	.req { color: var(--c-fg); }
+	.req {
+		color: var(--c-fg);
+	}
 
 	input,
 	textarea,
@@ -859,13 +1031,20 @@
 
 	input:focus,
 	textarea:focus,
-	select:focus { border-color: var(--c-fg); }
+	select:focus {
+		border-color: var(--c-fg);
+	}
 
 	input::placeholder,
-	textarea::placeholder { color: var(--c-fg-muted); opacity: 0.6; }
+	textarea::placeholder {
+		color: var(--c-fg-muted);
+		opacity: 0.6;
+	}
 
 	input.is-invalid,
-	textarea.is-invalid { border-color: #ef4444; }
+	textarea.is-invalid {
+		border-color: #ef4444;
+	}
 
 	.field-error {
 		display: block;
@@ -909,11 +1088,19 @@
 		font-weight: 500;
 		color: var(--c-fg);
 		text-align: left;
-		transition: border-color 0.15s, background 0.15s;
+		transition:
+			border-color 0.15s,
+			background 0.15s;
 	}
 
-	.meeting-opt:hover { border-color: var(--c-fg); background: var(--c-bg-alt); }
-	.meeting-opt.is-selected { border-color: var(--c-fg); background: var(--c-bg-alt); }
+	.meeting-opt:hover {
+		border-color: var(--c-fg);
+		background: var(--c-bg-alt);
+	}
+	.meeting-opt.is-selected {
+		border-color: var(--c-fg);
+		background: var(--c-bg-alt);
+	}
 
 	.meeting-radio {
 		width: 18px;
@@ -927,7 +1114,9 @@
 		transition: border-color 0.15s;
 	}
 
-	.meeting-opt.is-selected .meeting-radio { border-color: var(--c-fg); }
+	.meeting-opt.is-selected .meeting-radio {
+		border-color: var(--c-fg);
+	}
 
 	.radio-dot {
 		width: 8px;
@@ -970,7 +1159,9 @@
 		text-align: center;
 	}
 
-	.calendar-btn:hover { opacity: 0.82; }
+	.calendar-btn:hover {
+		opacity: 0.82;
+	}
 
 	/* Footer nav */
 	.modal-footer {
@@ -996,11 +1187,19 @@
 		font-family: var(--font-body);
 		color: var(--c-fg-muted);
 		cursor: pointer;
-		transition: border-color 0.15s, color 0.15s;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
 	}
 
-	.btn-back:hover:not(:disabled) { border-color: var(--c-fg); color: var(--c-fg); }
-	.btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+	.btn-back:hover:not(:disabled) {
+		border-color: var(--c-fg);
+		color: var(--c-fg);
+	}
+	.btn-back:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
 
 	.btn-next {
 		display: inline-flex;
@@ -1018,7 +1217,9 @@
 		transition: opacity 0.15s;
 	}
 
-	.btn-next:hover { opacity: 0.82; }
+	.btn-next:hover {
+		opacity: 0.82;
+	}
 
 	.btn-submit {
 		display: inline-flex;
@@ -1038,8 +1239,13 @@
 		min-width: 140px;
 	}
 
-	.btn-submit:hover:not(:disabled) { opacity: 0.82; }
-	.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+	.btn-submit:hover:not(:disabled) {
+		opacity: 0.82;
+	}
+	.btn-submit:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
 
 	.spinner {
 		width: 15px;
@@ -1051,5 +1257,9 @@
 		display: inline-block;
 	}
 
-	@keyframes spin { to { transform: rotate(360deg); } }
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
 </style>

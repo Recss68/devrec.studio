@@ -10,19 +10,16 @@
 		{ title: m.process_step_5_title(), desc: m.process_step_5_desc() }
 	]);
 
-	// SVG coordinate space
 	const VW = 160;
 	const VH = 900;
-	const ROW_H = VH / steps.length; // 180
+	const ROW_H = VH / steps.length;
 
-	// Alternate nodes left/right
 	const nodes = steps.map((_, i) => ({
 		cx: i % 2 === 0 ? 32 : 128,
 		cy: i * ROW_H + ROW_H / 2,
 		left: i % 2 === 0
 	}));
 
-	// Smooth bezier path through nodes
 	const pathD = nodes.reduce((d, c, i) => {
 		if (i === 0) return `M ${c.cx} ${c.cy}`;
 		const p = nodes[i - 1];
@@ -31,10 +28,27 @@
 	}, '');
 
 	let sectionEl;
+	let headEl;
 	let pathEl;
+	let mobileEl;
+	let mobileTrackEl;
 	let scrollProgress = $state(0);
 
+	function setMobileTrackHeight() {
+		if (!mobileEl || !mobileTrackEl) return;
+		const dots = mobileEl.querySelectorAll('.mobile-dot');
+		if (dots.length < 2) return;
+		const containerTop = mobileEl.getBoundingClientRect().top;
+		const firstCenter = dots[0].getBoundingClientRect().top + 18 - containerTop;
+		const lastCenter = dots[dots.length - 1].getBoundingClientRect().top + 18 - containerTop;
+		mobileTrackEl.style.top = firstCenter + 'px';
+		mobileTrackEl.style.height = lastCenter - firstCenter + 'px';
+	}
+
 	onMount(() => {
+		setMobileTrackHeight();
+		window.addEventListener('resize', setMobileTrackHeight);
+
 		if (!pathEl || !sectionEl) return;
 
 		const len = pathEl.getTotalLength();
@@ -44,15 +58,24 @@
 		const update = () => {
 			const rect = sectionEl.getBoundingClientRect();
 			const wh = window.innerHeight;
-			// Start when section enters viewport, finish when scrolled through
-			const p = Math.max(0, Math.min(1, (wh - rect.top) / (rect.height + wh * 0.2)));
+			const headH = headEl ? headEl.offsetHeight : 0;
+			const timelineTop = rect.top + headH;
+			const timelineH = rect.height - headH;
+
+			const startAt = wh * 0.75;
+			const endAt = wh;
+			const total = timelineH + startAt - endAt;
+			const p = Math.max(0, Math.min(1, (startAt - timelineTop) / total));
 			scrollProgress = p;
 			pathEl.style.strokeDashoffset = len * (1 - p);
 		};
 
 		window.addEventListener('scroll', update, { passive: true });
 		update();
-		return () => window.removeEventListener('scroll', update);
+		return () => {
+			window.removeEventListener('scroll', update);
+			window.removeEventListener('resize', setMobileTrackHeight);
+		};
 	});
 
 	const nodeActive = (i) => scrollProgress > i / steps.length;
@@ -60,18 +83,14 @@
 
 <section class="section process-section" id="werkwijze" bind:this={sectionEl}>
 	<div class="section-inner">
-
-		<div class="process-head">
+		<div class="process-head" bind:this={headEl}>
 			<span class="section-label">{m.process_label()}</span>
 			<h2 class="process-h2">{m.process_heading()}</h2>
 			<p class="process-lead">{m.process_lead()}</p>
 		</div>
 
-		<!-- ── Desktop: SVG S-curve track ── -->
 		<div class="process-desktop" aria-hidden="true">
 			<div class="process-grid">
-
-				<!-- Center SVG column (spans all rows) -->
 				<div class="track-col">
 					<svg
 						class="track-svg"
@@ -79,12 +98,9 @@
 						preserveAspectRatio="none"
 						xmlns="http://www.w3.org/2000/svg"
 					>
-						<!-- Background path -->
 						<path class="path-bg" d={pathD} />
-						<!-- Animated fill path -->
 						<path class="path-fill" d={pathD} bind:this={pathEl} />
 
-						<!-- Nodes -->
 						{#each nodes as node, i}
 							<g class="node" class:node-on={nodeActive(i)}>
 								<circle class="node-ring" cx={node.cx} cy={node.cy} r="24" />
@@ -97,14 +113,13 @@
 									dominant-baseline="central"
 									font-family="sans-serif"
 									font-size="13"
-									font-weight="700"
-								>{i + 1}</text>
+									font-weight="700">{i + 1}</text
+								>
 							</g>
 						{/each}
 					</svg>
 				</div>
 
-				<!-- Step text items -->
 				{#each steps as step, i}
 					<div
 						class="step-text"
@@ -116,15 +131,13 @@
 						<p class="step-desc">{step.desc}</p>
 					</div>
 				{/each}
-
 			</div>
 		</div>
 
-		<!-- ── Mobile: vertical timeline ── -->
-		<div class="process-mobile">
-			<div class="mobile-track" aria-hidden="true">
+		<div class="process-mobile" bind:this={mobileEl}>
+			<div class="mobile-track" aria-hidden="true" bind:this={mobileTrackEl}>
 				<div class="mobile-track-bg"></div>
-				<div class="mobile-track-fill" style="height: {Math.min(scrollProgress * 130, 100)}%"></div>
+				<div class="mobile-track-fill" style="height: {scrollProgress * 100}%"></div>
 			</div>
 			<ol class="mobile-steps" aria-label="Werkwijze stappen">
 				{#each steps as step, i}
@@ -141,20 +154,29 @@
 			</ol>
 		</div>
 
-		<!-- ── Bonus note ── -->
 		<div class="process-bonus">
-			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" flex-shrink="0">
-				<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-				<polyline points="22,6 12,13 2,6"/>
+			<svg
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+				style="flex-shrink: 0"
+			>
+				<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+				<polyline points="22,6 12,13 2,6" />
 			</svg>
-			<span>{m.process_bonus_pre()} <strong>{m.process_bonus_count()}</strong> {m.process_bonus_post()} (<em>{m.process_bonus_example()}</em>).</span>
+			<span
+				>{m.process_bonus_pre()} <strong>{m.process_bonus_count()}</strong>
+				{m.process_bonus_post()} (<em>{m.process_bonus_example()}</em>).</span
+			>
 		</div>
-
 	</div>
 </section>
 
 <style>
-	/* Section header */
 	.process-head {
 		margin-bottom: clamp(3rem, 5vw, 4rem);
 	}
@@ -176,18 +198,24 @@
 		margin: 0;
 	}
 
-	/* ── Layout switching ── */
-	/* Mobile hidden by default, shown only on narrow screens */
-	.process-mobile  { display: none; }
-	/* Desktop hidden on narrow screens */
-	.process-desktop { display: none; }
+	.process-mobile {
+		display: none;
+	}
+
+	.process-desktop {
+		display: none;
+	}
 
 	@media (max-width: 767px) {
-		.process-mobile  { display: block; }
+		.process-mobile {
+			display: block;
+		}
 	}
 
 	@media (min-width: 768px) {
-		.process-desktop { display: block; }
+		.process-desktop {
+			display: block;
+		}
 	}
 
 	.process-grid {
@@ -197,7 +225,6 @@
 		align-items: center;
 	}
 
-	/* SVG track column — spans all 5 rows */
 	.track-col {
 		grid-column: 2;
 		grid-row: 1 / -1;
@@ -211,7 +238,6 @@
 		overflow: visible;
 	}
 
-	/* Paths */
 	.path-bg {
 		fill: none;
 		stroke: var(--c-border-site);
@@ -225,7 +251,6 @@
 		stroke-linecap: round;
 	}
 
-	/* Nodes */
 	.node-ring {
 		fill: none;
 		stroke: var(--c-border-site);
@@ -237,7 +262,9 @@
 		fill: var(--c-bg);
 		stroke: var(--c-border-site);
 		stroke-width: 1.5;
-		transition: fill 0.5s ease, stroke 0.5s ease;
+		transition:
+			fill 0.5s ease,
+			stroke 0.5s ease;
 	}
 
 	.node-num {
@@ -260,7 +287,6 @@
 		fill: var(--c-bg);
 	}
 
-	/* Step text */
 	.step-text {
 		display: flex;
 		flex-direction: column;
@@ -298,9 +324,10 @@
 		max-width: 260px;
 	}
 
-	.step-text-l .step-desc { margin-left: auto; }
+	.step-text-l .step-desc {
+		margin-left: auto;
+	}
 
-	/* ── Mobile layout ── */
 	.process-mobile {
 		position: relative;
 	}
@@ -317,7 +344,6 @@
 		position: absolute;
 		left: 18px;
 		top: 18px;
-		bottom: 18px;
 		width: 2px;
 		z-index: 0;
 	}
@@ -330,7 +356,9 @@
 		border-radius: 2px;
 	}
 
-	.mobile-track-bg  { background: var(--c-border-site); }
+	.mobile-track-bg {
+		background: var(--c-border-site);
+	}
 	.mobile-track-fill {
 		background: var(--c-fg);
 		bottom: auto;
@@ -346,7 +374,9 @@
 		z-index: 1;
 	}
 
-	.mobile-step:last-child { padding-bottom: 0; }
+	.mobile-step:last-child {
+		padding-bottom: 0;
+	}
 
 	.mobile-dot {
 		flex-shrink: 0;
@@ -361,7 +391,10 @@
 		font-size: 0.8rem;
 		font-weight: 700;
 		color: var(--c-fg-muted);
-		transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+		transition:
+			background 0.4s ease,
+			border-color 0.4s ease,
+			color 0.4s ease;
 	}
 
 	.mobile-dot.mobile-dot-on {
@@ -377,9 +410,10 @@
 		gap: 0.35rem;
 	}
 
-	.mobile-content .step-desc { max-width: none; }
+	.mobile-content .step-desc {
+		max-width: none;
+	}
 
-	/* ── Bonus note ── */
 	.process-bonus {
 		display: flex;
 		align-items: flex-start;
@@ -401,6 +435,10 @@
 		color: var(--c-fg-muted);
 	}
 
-	.process-bonus strong { color: var(--c-fg); }
-	.process-bonus em { font-style: normal; }
+	.process-bonus strong {
+		color: var(--c-fg);
+	}
+	.process-bonus em {
+		font-style: normal;
+	}
 </style>

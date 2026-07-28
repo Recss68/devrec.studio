@@ -22,18 +22,42 @@
 	]);
 
 	const cats = $derived([
-		{ key: 'performance',    label: m.check_cat_performance_label(),    desc: m.check_cat_performance_desc() },
-		{ key: 'accessibility',  label: m.check_cat_accessibility_label(),  desc: m.check_cat_accessibility_desc() },
-		{ key: 'seo',            label: m.check_cat_seo_label(),            desc: m.check_cat_seo_desc() },
-		{ key: 'best-practices', label: m.check_cat_bestpractices_label(),  desc: m.check_cat_bestpractices_desc() }
+		{
+			key: 'performance',
+			label: m.check_cat_performance_label(),
+			desc: m.check_cat_performance_desc()
+		},
+		{
+			key: 'accessibility',
+			label: m.check_cat_accessibility_label(),
+			desc: m.check_cat_accessibility_desc()
+		},
+		{ key: 'seo', label: m.check_cat_seo_label(), desc: m.check_cat_seo_desc() },
+		{
+			key: 'best-practices',
+			label: m.check_cat_bestpractices_label(),
+			desc: m.check_cat_bestpractices_desc()
+		}
 	]);
 
 	const vitals = $derived([
-		{ key: 'first-contentful-paint',  label: m.check_vital_fcp_label(), tip: m.check_vital_fcp_tip() },
-		{ key: 'largest-contentful-paint',label: m.check_vital_lcp_label(), tip: m.check_vital_lcp_tip() },
-		{ key: 'total-blocking-time',     label: m.check_vital_tbt_label(), tip: m.check_vital_tbt_tip() },
-		{ key: 'cumulative-layout-shift', label: m.check_vital_cls_label(), tip: m.check_vital_cls_tip() },
-		{ key: 'speed-index',             label: m.check_vital_si_label(),  tip: m.check_vital_si_tip() }
+		{
+			key: 'first-contentful-paint',
+			label: m.check_vital_fcp_label(),
+			tip: m.check_vital_fcp_tip()
+		},
+		{
+			key: 'largest-contentful-paint',
+			label: m.check_vital_lcp_label(),
+			tip: m.check_vital_lcp_tip()
+		},
+		{ key: 'total-blocking-time', label: m.check_vital_tbt_label(), tip: m.check_vital_tbt_tip() },
+		{
+			key: 'cumulative-layout-shift',
+			label: m.check_vital_cls_label(),
+			tip: m.check_vital_cls_tip()
+		},
+		{ key: 'speed-index', label: m.check_vital_si_label(), tip: m.check_vital_si_tip() }
 	]);
 
 	const faqs = $derived([
@@ -94,7 +118,13 @@
 		return AGENTIC_IDS.map((id) => {
 			const a = audits[id];
 			if (!a) return null;
-			return { id, title: a.title, displayValue: a.displayValue ?? null, score: a.score, displayMode: a.scoreDisplayMode };
+			return {
+				id,
+				title: a.title,
+				displayValue: a.displayValue ?? null,
+				score: a.score,
+				displayMode: a.scoreDisplayMode
+			};
 		}).filter(Boolean);
 	}
 
@@ -202,7 +232,15 @@
 <section class="checker-hero">
 	<div class="checker-inner">
 		<a href="/" class="back-link">
-			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+			<svg
+				width="14"
+				height="14"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
 				<line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
 			</svg>
 			{m.check_back()}
@@ -225,7 +263,12 @@
 				autocapitalize="off"
 				spellcheck="false"
 			/>
-			<button onclick={runCheck} disabled={loading || !urlInput.trim()} class="url-btn" aria-label={m.check_analyse_aria()}>
+			<button
+				onclick={runCheck}
+				disabled={loading || !urlInput.trim()}
+				class="url-btn"
+				aria-label={m.check_analyse_aria()}
+			>
 				{#if loading}
 					<span class="btn-spinner" aria-hidden="true"></span>
 				{:else}
@@ -244,9 +287,25 @@
 		<div class="checker-inner loading-inner">
 			<div class="loading-ring" aria-hidden="true">
 				<svg viewBox="0 0 100 100" width="90" height="90" class="loading-svg">
-					<circle cx="50" cy="50" r="38" fill="none" stroke="var(--c-border-site)" stroke-width="6" />
-					<circle cx="50" cy="50" r="38" fill="none" stroke="var(--c-fg)" stroke-width="6" stroke-linecap="round"
-						stroke-dasharray="239" stroke-dashoffset="180" />
+					<circle
+						cx="50"
+						cy="50"
+						r="38"
+						fill="none"
+						stroke="var(--c-border-site)"
+						stroke-width="6"
+					/>
+					<circle
+						cx="50"
+						cy="50"
+						r="38"
+						fill="none"
+						stroke="var(--c-fg)"
+						stroke-width="6"
+						stroke-linecap="round"
+						stroke-dasharray="239"
+						stroke-dashoffset="180"
+					/>
 				</svg>
 			</div>
 			<p class="loading-step">{loadingSteps[loadingStep]}</p>
@@ -260,8 +319,21 @@
 	<section class="error-section">
 		<div class="checker-inner">
 			<div class="error-box" role="alert">
-				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-					<circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					aria-hidden="true"
+				>
+					<circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line
+						x1="12"
+						y1="16"
+						x2="12.01"
+						y2="16"
+					/>
 				</svg>
 				{errMsg}
 			</div>
@@ -276,29 +348,56 @@
 
 	<section class="results-section">
 		<div class="checker-inner">
-
 			<!-- Score cards -->
 			<h2 class="results-heading">{m.check_results_heading()}</h2>
-			<p class="results-url">{m.check_results_analysed()} <strong>{result.lighthouseResult?.finalUrl ?? urlInput}</strong></p>
+			<p class="results-url">
+				{m.check_results_analysed()}
+				<strong>{result.lighthouseResult?.finalUrl ?? urlInput}</strong>
+			</p>
 
 			<div class="score-grid">
 				{#each scores as cat, i}
 					{@const color = scoreColor(cat.score)}
 					<div class="score-card">
-						<svg viewBox="0 0 100 100" width="110" height="110" aria-label="{cat.label}: {cat.score} / 100">
-							<circle cx="50" cy="50" r="40" fill="none" stroke="var(--c-border-site)" stroke-width="8" />
+						<svg
+							viewBox="0 0 100 100"
+							width="110"
+							height="110"
+							aria-label="{cat.label}: {cat.score} / 100"
+						>
 							<circle
-								cx="50" cy="50" r="40"
+								cx="50"
+								cy="50"
+								r="40"
+								fill="none"
+								stroke="var(--c-border-site)"
+								stroke-width="8"
+							/>
+							<circle
+								cx="50"
+								cy="50"
+								r="40"
 								fill="none"
 								stroke={color}
 								stroke-width="8"
 								stroke-linecap="round"
 								stroke-dasharray={CIRC}
-								style="stroke-dashoffset:{animated ? CIRC * (1 - cat.score / 100) : CIRC}; transition: stroke-dashoffset 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) {i * 0.12}s"
+								style="stroke-dashoffset:{animated
+									? CIRC * (1 - cat.score / 100)
+									: CIRC}; transition: stroke-dashoffset 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) {i *
+									0.12}s"
 								transform="rotate(-90 50 50)"
 							/>
-							<text x="50" y="50" text-anchor="middle" dominant-baseline="central"
-								font-size="20" font-weight="700" fill={color} font-family="sans-serif">{cat.score}</text>
+							<text
+								x="50"
+								y="50"
+								text-anchor="middle"
+								dominant-baseline="central"
+								font-size="20"
+								font-weight="700"
+								fill={color}
+								font-family="sans-serif">{cat.score}</text
+							>
 						</svg>
 						<div class="card-label">{cat.label}</div>
 						<div class="card-rating" style="color:{color}">{scoreLabel(cat.score)}</div>
@@ -315,7 +414,8 @@
 					{#each vitals as v}
 						{@const vital = getVital(v.key)}
 						<li class="vital-row">
-							<span class="vital-dot" style="background:{vitalDot(vital.score)}" aria-hidden="true"></span>
+							<span class="vital-dot" style="background:{vitalDot(vital.score)}" aria-hidden="true"
+							></span>
 							<span class="vital-label">{v.label}</span>
 							<span class="vital-tip">{v.tip}</span>
 							<span class="vital-value">{vital.value}</span>
@@ -333,12 +433,20 @@
 						{#each tips as tip}
 							{@const score = tip.score ?? 0}
 							<li class="tip-row">
-								<span class="tip-icon" style="color:{score < 0.5 ? '#ef4444' : '#f97316'}" aria-hidden="true">
+								<span
+									class="tip-icon"
+									style="color:{score < 0.5 ? '#ef4444' : '#f97316'}"
+									aria-hidden="true"
+								>
 									{score < 0.5 ? '✗' : '~'}
 								</span>
 								<div class="tip-content">
 									<strong class="tip-title">{tip.title}</strong>
-									<span class="tip-desc">{stripMd(tip.description).slice(0, 120)}{tip.description.length > 120 ? '…' : ''}</span>
+									<span class="tip-desc"
+										>{stripMd(tip.description).slice(0, 120)}{tip.description.length > 120
+											? '…'
+											: ''}</span
+									>
 								</div>
 							</li>
 						{/each}
@@ -350,7 +458,9 @@
 			{#if result?.lighthouseResult?.categories?.['agentic-browsing']}
 				{@const agAudits = getAgenticAudits()}
 				{@const agPassed = agAudits.filter((a) => a.score === 1).length}
-				{@const agTotal = agAudits.filter((a) => a.score !== null && a.displayMode !== 'notApplicable').length}
+				{@const agTotal = agAudits.filter(
+					(a) => a.score !== null && a.displayMode !== 'notApplicable'
+				).length}
 				<div class="agentic-block">
 					<div class="agentic-head">
 						<div>
@@ -370,13 +480,18 @@
 								style="width:{animated && agTotal > 0 ? (agPassed / agTotal) * 100 : 0}%"
 							></div>
 						</div>
-						<span class="agentic-score-label">{m.check_agentic_score({ passed: agPassed, total: agTotal })}</span>
+						<span class="agentic-score-label"
+							>{m.check_agentic_score({ passed: agPassed, total: agTotal })}</span
+						>
 					</div>
 
 					<ul class="agentic-list">
 						{#each agAudits as audit}
 							{@const isPass = audit.score === 1}
-							{@const isNa = audit.score === null || audit.displayMode === 'notApplicable' || audit.displayMode === 'informative'}
+							{@const isNa =
+								audit.score === null ||
+								audit.displayMode === 'notApplicable' ||
+								audit.displayMode === 'informative'}
 							<li class="agentic-row">
 								<span
 									class="agentic-icon"
@@ -384,7 +499,8 @@
 									class:agentic-icon-fail={!isPass && !isNa}
 									class:agentic-icon-na={isNa}
 									aria-hidden="true"
-								>{#if isNa}–{:else if isPass}✓{:else}✗{/if}</span>
+									>{#if isNa}–{:else if isPass}✓{:else}✗{/if}</span
+								>
 								<div class="agentic-audit-info">
 									<span class="agentic-audit-title">{audit.title}</span>
 									{#if audit.displayValue}
@@ -396,7 +512,6 @@
 					</ul>
 				</div>
 			{/if}
-
 		</div>
 	</section>
 
@@ -422,7 +537,15 @@
 				<p class="report-note">{m.check_report_note()}</p>
 			{:else}
 				<div class="report-success">
-					<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" aria-hidden="true">
+					<svg
+						width="28"
+						height="28"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="#22c55e"
+						stroke-width="2"
+						aria-hidden="true"
+					>
 						<circle cx="12" cy="12" r="10" /><polyline points="9 12 11 14 15 10" />
 					</svg>
 					<div>
@@ -447,12 +570,22 @@
 					<button
 						class="faq-q"
 						class:open={openFaq === i}
-						onclick={() => { openFaq = openFaq === i ? null : i; }}
+						onclick={() => {
+							openFaq = openFaq === i ? null : i;
+						}}
 						aria-expanded={openFaq === i}
 					>
 						{faq.q}
-						<svg class="faq-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
-							stroke="currentColor" stroke-width="2" aria-hidden="true">
+						<svg
+							class="faq-icon"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
 							<line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
 						</svg>
 					</button>
@@ -487,7 +620,9 @@
 		margin-bottom: 2rem;
 		transition: color 0.15s;
 	}
-	.back-link:hover { color: var(--c-fg); }
+	.back-link:hover {
+		color: var(--c-fg);
+	}
 
 	.tool-badge {
 		display: inline-block;
@@ -539,9 +674,16 @@
 		transition: border-color 0.15s;
 		min-width: 0;
 	}
-	.url-input:focus { border-color: var(--c-fg); }
-	.url-input:disabled { opacity: 0.5; cursor: not-allowed; }
-	.url-input::placeholder { color: var(--c-fg-muted); }
+	.url-input:focus {
+		border-color: var(--c-fg);
+	}
+	.url-input:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+	.url-input::placeholder {
+		color: var(--c-fg-muted);
+	}
 
 	.url-btn {
 		padding: 0.9rem 1.75rem;
@@ -560,11 +702,18 @@
 		gap: 0.5rem;
 		white-space: nowrap;
 	}
-	.url-btn:hover:not(:disabled) { opacity: 0.82; }
-	.url-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+	.url-btn:hover:not(:disabled) {
+		opacity: 0.82;
+	}
+	.url-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
 
 	@media (min-width: 540px) {
-		.url-form { flex-direction: row; }
+		.url-form {
+			flex-direction: row;
+		}
 	}
 
 	.url-hint {
@@ -572,7 +721,9 @@
 		color: var(--c-fg-muted);
 		margin: 0.6rem 0 0;
 	}
-	.url-hint em { font-style: normal; }
+	.url-hint em {
+		font-style: normal;
+	}
 
 	/* Loading */
 	.loading-section {
@@ -590,7 +741,11 @@
 		transform-origin: center;
 		display: block;
 	}
-	@keyframes spin { to { transform: rotate(360deg); } }
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
 	.loading-step {
 		font-size: 1rem;
 		color: var(--c-fg);
@@ -613,7 +768,9 @@
 	}
 
 	/* Error */
-	.error-section { padding-block: 2rem; }
+	.error-section {
+		padding-block: 2rem;
+	}
 	.error-box {
 		display: flex;
 		align-items: flex-start;
@@ -626,7 +783,10 @@
 		font-size: 0.9rem;
 		line-height: 1.5;
 	}
-	.error-box svg { flex-shrink: 0; margin-top: 1px; }
+	.error-box svg {
+		flex-shrink: 0;
+		margin-top: 1px;
+	}
 
 	/* Results */
 	.results-section {
@@ -647,7 +807,9 @@
 		margin: 0 0 2.5rem;
 		word-break: break-all;
 	}
-	.results-url strong { color: var(--c-fg); }
+	.results-url strong {
+		color: var(--c-fg);
+	}
 
 	/* Score grid */
 	.score-grid {
@@ -658,7 +820,9 @@
 	}
 
 	@media (min-width: 640px) {
-		.score-grid { grid-template-columns: repeat(4, 1fr); }
+		.score-grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
 	}
 
 	.score-card {
@@ -756,7 +920,9 @@
 	}
 
 	/* Tips */
-	.tips-block { margin-bottom: 2rem; }
+	.tips-block {
+		margin-bottom: 2rem;
+	}
 	.tips-list {
 		list-style: none;
 		margin: 0;
@@ -845,7 +1011,9 @@
 		gap: 0.5rem;
 	}
 	@media (min-width: 480px) {
-		.report-form { flex-direction: row; }
+		.report-form {
+			flex-direction: row;
+		}
 	}
 	.report-input {
 		flex: 1;
@@ -860,8 +1028,12 @@
 		transition: border-color 0.15s;
 		min-width: 0;
 	}
-	.report-input:focus { border-color: var(--c-fg); }
-	.report-input::placeholder { color: var(--c-fg-muted); }
+	.report-input:focus {
+		border-color: var(--c-fg);
+	}
+	.report-input::placeholder {
+		color: var(--c-fg-muted);
+	}
 	.report-btn {
 		padding: 0.85rem 1.5rem;
 		font-size: 0.88rem;
@@ -875,8 +1047,13 @@
 		transition: opacity 0.15s;
 		white-space: nowrap;
 	}
-	.report-btn:hover:not(:disabled) { opacity: 0.82; }
-	.report-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+	.report-btn:hover:not(:disabled) {
+		opacity: 0.82;
+	}
+	.report-btn:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
 	.report-note {
 		font-size: 0.76rem;
 		color: var(--c-fg-muted);
@@ -892,9 +1069,21 @@
 		padding: 1.25rem 1.5rem;
 		text-align: left;
 	}
-	.report-success svg { flex-shrink: 0; margin-top: 2px; }
-	.report-success strong { display: block; color: var(--c-fg); font-size: 0.95rem; margin-bottom: 0.25rem; }
-	.report-success p { font-size: 0.85rem; color: var(--c-fg-muted); margin: 0; }
+	.report-success svg {
+		flex-shrink: 0;
+		margin-top: 2px;
+	}
+	.report-success strong {
+		display: block;
+		color: var(--c-fg);
+		font-size: 0.95rem;
+		margin-bottom: 0.25rem;
+	}
+	.report-success p {
+		font-size: 0.85rem;
+		color: var(--c-fg-muted);
+		margin: 0;
+	}
 
 	/* Agentic Browsing */
 	.agentic-block {
@@ -912,7 +1101,9 @@
 		margin-bottom: 1.5rem;
 	}
 
-	.agentic-head .block-sub { margin-bottom: 0; }
+	.agentic-head .block-sub {
+		margin-bottom: 0;
+	}
 
 	.agentic-badge {
 		font-size: 0.68rem;
@@ -1000,9 +1191,18 @@
 		margin-top: 1px;
 	}
 
-	.agentic-icon-pass { background: rgba(34, 197, 94, 0.12); color: #22c55e; }
-	.agentic-icon-fail { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-	.agentic-icon-na   { background: var(--c-bg-alt); color: var(--c-fg-muted); }
+	.agentic-icon-pass {
+		background: rgba(34, 197, 94, 0.12);
+		color: #22c55e;
+	}
+	.agentic-icon-fail {
+		background: rgba(239, 68, 68, 0.1);
+		color: #ef4444;
+	}
+	.agentic-icon-na {
+		background: var(--c-bg-alt);
+		color: var(--c-fg-muted);
+	}
 
 	.agentic-audit-info {
 		display: flex;
@@ -1051,12 +1251,16 @@
 		text-align: left;
 		transition: color 0.15s;
 	}
-	.faq-q:hover { color: var(--c-fg-muted); }
+	.faq-q:hover {
+		color: var(--c-fg-muted);
+	}
 	.faq-icon {
 		flex-shrink: 0;
 		transition: transform 0.2s ease;
 	}
-	.faq-q.open .faq-icon { transform: rotate(45deg); }
+	.faq-q.open .faq-icon {
+		transform: rotate(45deg);
+	}
 	.faq-a {
 		font-size: 0.88rem;
 		color: var(--c-fg-muted);

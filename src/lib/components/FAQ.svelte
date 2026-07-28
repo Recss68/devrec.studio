@@ -25,11 +25,7 @@
 		<div class="faq-list">
 			{#each faqs as faq, i}
 				<div class="faq-item" class:open={openIndex === i}>
-					<button
-						class="faq-question"
-						onclick={() => toggle(i)}
-						aria-expanded={openIndex === i}
-					>
+					<button class="faq-question" onclick={() => toggle(i)} aria-expanded={openIndex === i}>
 						<span>{faq.q()}</span>
 						<span class="faq-icon" aria-hidden="true">
 							<svg

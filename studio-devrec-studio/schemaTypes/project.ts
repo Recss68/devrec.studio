@@ -1,4 +1,4 @@
-import { defineType, defineField } from 'sanity'
+import {defineType, defineField} from 'sanity'
 
 export const project = defineType({
   name: 'project',
@@ -15,7 +15,7 @@ export const project = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: { source: 'title' },
+      options: {source: 'title'},
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -33,14 +33,14 @@ export const project = defineType({
       name: 'image',
       title: 'Afbeelding',
       type: 'image',
-      options: { hotspot: true },
+      options: {hotspot: true},
     }),
     defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',
-      of: [{ type: 'string' }],
-      options: { layout: 'tags' },
+      of: [{type: 'string'}],
+      options: {layout: 'tags'},
     }),
     defineField({
       name: 'description_nl',
@@ -66,15 +66,15 @@ export const project = defineType({
     {
       title: 'Volgorde',
       name: 'orderAsc',
-      by: [{ field: 'order', direction: 'asc' }],
+      by: [{field: 'order', direction: 'asc'}],
     },
     {
       title: 'Jaar (nieuwste eerst)',
       name: 'yearDesc',
-      by: [{ field: 'year', direction: 'desc' }],
+      by: [{field: 'year', direction: 'desc'}],
     },
   ],
   preview: {
-    select: { title: 'title', subtitle: 'year', media: 'image' },
+    select: {title: 'title', subtitle: 'year', media: 'image'},
   },
 })

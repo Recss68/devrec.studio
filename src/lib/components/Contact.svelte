@@ -45,34 +45,17 @@
 			<form class="contact-form" onsubmit={handleSubmit} novalidate>
 				<div class="field">
 					<label for="contact-name">{m.contact_name()}</label>
-					<input
-						id="contact-name"
-						type="text"
-						bind:value={name}
-						required
-						autocomplete="name"
-					/>
+					<input id="contact-name" type="text" bind:value={name} required autocomplete="name" />
 				</div>
 
 				<div class="field">
 					<label for="contact-email">{m.contact_email()}</label>
-					<input
-						id="contact-email"
-						type="email"
-						bind:value={email}
-						required
-						autocomplete="email"
-					/>
+					<input id="contact-email" type="email" bind:value={email} required autocomplete="email" />
 				</div>
 
 				<div class="field">
 					<label for="contact-message">{m.contact_message()}</label>
-					<textarea
-						id="contact-message"
-						bind:value={message}
-						rows="5"
-						required
-					></textarea>
+					<textarea id="contact-message" bind:value={message} rows="5" required></textarea>
 				</div>
 
 				<button type="submit" class="submit-btn" disabled={status === 'loading'}>
@@ -86,7 +69,11 @@
 				{#if status === 'success'}
 					<p class="form-feedback form-feedback-success">Bedankt! Je bericht is verstuurd.</p>
 				{:else if status === 'error'}
-					<p class="form-feedback form-feedback-error">Er is iets misgegaan. Probeer het opnieuw of mail direct naar <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+					<p class="form-feedback form-feedback-error">
+						Er is iets misgegaan. Probeer het opnieuw of mail direct naar <a href="mailto:{EMAIL}"
+							>{EMAIL}</a
+						>.
+					</p>
 				{/if}
 			</form>
 
@@ -210,7 +197,9 @@
 	}
 
 	@keyframes spin {
-		to { transform: rotate(360deg); }
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.form-feedback {

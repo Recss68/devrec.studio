@@ -12,11 +12,20 @@
 
 <svelte:head>
 	<title>devrec | Webdeveloper & Designer</title>
-	<meta name="description" content="devrec, webdeveloper & designer gevestigd in Amsterdam. Websites die indruk maken. Resultaten die tellen." />
+	<meta
+		name="description"
+		content="devrec, webdeveloper & designer gevestigd in Amsterdam. Websites die indruk maken. Resultaten die tellen."
+	/>
 	<meta property="og:title" content="devrec | Webdeveloper & Designer" />
-	<meta property="og:description" content="devrec, webdeveloper & designer gevestigd in Amsterdam. Websites die indruk maken. Resultaten die tellen." />
+	<meta
+		property="og:description"
+		content="devrec, webdeveloper & designer gevestigd in Amsterdam. Websites die indruk maken. Resultaten die tellen."
+	/>
 	<meta name="twitter:title" content="devrec | Webdeveloper & Designer" />
-	<meta name="twitter:description" content="devrec, webdeveloper & designer gevestigd in Amsterdam. Websites die indruk maken. Resultaten die tellen." />
+	<meta
+		name="twitter:description"
+		content="devrec, webdeveloper & designer gevestigd in Amsterdam. Websites die indruk maken. Resultaten die tellen."
+	/>
 </svelte:head>
 
 <Hero />
@@ -49,7 +58,9 @@
 		transition: opacity 0.15s;
 		flex-wrap: wrap;
 	}
-	.tool-cta-banner:hover { opacity: 0.88; }
+	.tool-cta-banner:hover {
+		opacity: 0.88;
+	}
 
 	.tool-cta-badge {
 		display: inline-block;

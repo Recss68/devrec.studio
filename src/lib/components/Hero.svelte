@@ -32,8 +32,10 @@
 			<span class="hero-label">{m.hero_label()}</span>
 
 			<h1 class="hero-heading" aria-label={m.hero_heading()}>
-				{#each (displayText.match(/\S+|\s+/g) || []) as token, ti (ti)}
-					{#if /\s/.test(token)}{token}{:else}<span class="word">{#each token.split('') as char, ci (ci)}<span class="char">{char}</span>{/each}</span>{/if}
+				{#each displayText.match(/\S+|\s+/g) || [] as token, ti (ti)}
+					{#if /\s/.test(token)}{token}{:else}<span class="word"
+							>{#each token.split('') as char, ci (ci)}<span class="char">{char}</span>{/each}</span
+						>{/if}
 				{/each}<span class="cursor" class:blink={typingDone} aria-hidden="true">|</span>
 			</h1>
 
@@ -41,7 +43,9 @@
 
 			<div class="hero-cta">
 				<a href="#contact" class="btn btn-primary">{m.hero_cta_primary()}</a>
-				<button onclick={() => openQuote()} class="btn btn-secondary">{m.hero_cta_secondary()}</button>
+				<button onclick={() => openQuote()} class="btn btn-secondary"
+					>{m.hero_cta_secondary()}</button
+				>
 			</div>
 		</div>
 
@@ -81,8 +85,8 @@
 		transition: opacity 0.2s ease;
 		background:
 			radial-gradient(ellipse 120% 70% at -10% 110%, hsla(272, 80%, 52%, 0.65) 0%, transparent 55%),
-			radial-gradient(ellipse 100% 65% at 110% 95%, hsla(260, 78%, 48%, 0.60) 0%, transparent 55%),
-			radial-gradient(ellipse 80% 50% at 50% 120%, hsla(266, 75%, 45%, 0.30) 0%, transparent 50%);
+			radial-gradient(ellipse 100% 65% at 110% 95%, hsla(260, 78%, 48%, 0.6) 0%, transparent 55%),
+			radial-gradient(ellipse 80% 50% at 50% 120%, hsla(266, 75%, 45%, 0.3) 0%, transparent 50%);
 	}
 
 	.hero {
@@ -114,13 +118,15 @@
 		border: 1px solid var(--hero-border);
 		padding: 0.3rem 0.75rem;
 		border-radius: 999px;
-		transition: color 0.2s ease, border-color 0.2s ease;
+		transition:
+			color 0.2s ease,
+			border-color 0.2s ease;
 	}
 
 	.hero-heading {
 		font-family: var(--font-heading);
 		font-size: clamp(1.5rem, 9vw, 7.5rem);
-		line-height: 1.0;
+		line-height: 1;
 		letter-spacing: -0.03em;
 		color: var(--hero-text);
 		margin: 0 0 1.5rem 0;
@@ -165,8 +171,13 @@
 	}
 
 	@keyframes blink {
-		0%, 100% { opacity: 1; }
-		50% { opacity: 0; }
+		0%,
+		100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
 	}
 
 	.hero-subtitle {
@@ -193,7 +204,11 @@
 		font-family: var(--font-body);
 		letter-spacing: 0.01em;
 		border-radius: 6px;
-		transition: opacity 0.15s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+		transition:
+			opacity 0.15s ease,
+			background 0.2s ease,
+			color 0.2s ease,
+			border-color 0.2s ease;
 		white-space: nowrap;
 		cursor: pointer;
 	}
@@ -244,8 +259,13 @@
 	}
 
 	@keyframes bounce {
-		0%, 100% { transform: translateY(0); }
-		50% { transform: translateY(5px); }
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(5px);
+		}
 	}
 
 	@media (min-width: 768px) {
@@ -256,7 +276,7 @@
 		.hero-gradient {
 			background:
 				radial-gradient(ellipse 65% 80% at -5% 105%, hsla(272, 82%, 54%, 0.65) 0%, transparent 58%),
-				radial-gradient(ellipse 60% 75% at 105% 95%, hsla(258, 78%, 50%, 0.60) 0%, transparent 58%),
+				radial-gradient(ellipse 60% 75% at 105% 95%, hsla(258, 78%, 50%, 0.6) 0%, transparent 58%),
 				radial-gradient(ellipse 50% 40% at 50% 115%, hsla(265, 75%, 45%, 0.25) 0%, transparent 50%);
 		}
 	}
@@ -264,9 +284,13 @@
 	@media (min-width: 1024px) {
 		.hero-gradient {
 			background:
-				radial-gradient(ellipse 55% 85% at -5% 110%, hsla(272, 85%, 55%, 0.60) 0%, transparent 55%),
-				radial-gradient(ellipse 50% 80% at 105% 100%, hsla(256, 80%, 50%, 0.55) 0%, transparent 55%),
-				radial-gradient(ellipse 45% 45% at 50% 120%, hsla(264, 75%, 45%, 0.20) 0%, transparent 50%);
+				radial-gradient(ellipse 55% 85% at -5% 110%, hsla(272, 85%, 55%, 0.6) 0%, transparent 55%),
+				radial-gradient(
+					ellipse 50% 80% at 105% 100%,
+					hsla(256, 80%, 50%, 0.55) 0%,
+					transparent 55%
+				),
+				radial-gradient(ellipse 45% 45% at 50% 120%, hsla(264, 75%, 45%, 0.2) 0%, transparent 50%);
 		}
 	}
 </style>

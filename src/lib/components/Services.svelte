@@ -18,21 +18,27 @@
 					<span class="service-tag">{m.service_1_tag_2()}</span>
 					<span class="service-tag">{m.service_1_tag_3()}</span>
 				</div>
-				<button class="service-quote-btn" onclick={() => openQuote('web')}>{m.quote_modal_title()}</button>
+				<button class="service-quote-btn" onclick={() => openQuote('web')}
+					>{m.quote_modal_title()}</button
+				>
 			</article>
 
 			<article class="service-card">
 				<div class="service-number" aria-hidden="true">02</div>
 				<h3 class="service-title">{m.service_2_title()}</h3>
 				<p class="service-desc">{m.service_2_desc()}</p>
-				<button class="service-quote-btn" onclick={() => openQuote('hosting')}>{m.quote_modal_title()}</button>
+				<button class="service-quote-btn" onclick={() => openQuote('hosting')}
+					>{m.quote_modal_title()}</button
+				>
 			</article>
 
 			<article class="service-card">
 				<div class="service-number" aria-hidden="true">03</div>
 				<h3 class="service-title">{m.service_3_title()}</h3>
 				<p class="service-desc">{m.service_3_desc()}</p>
-				<button class="service-quote-btn" onclick={() => openQuote('shop')}>{m.quote_modal_title()}</button>
+				<button class="service-quote-btn" onclick={() => openQuote('shop')}
+					>{m.quote_modal_title()}</button
+				>
 			</article>
 
 			<article class="service-card">
@@ -44,7 +50,9 @@
 					<span class="service-tag">{m.service_4_tag_2()}</span>
 					<span class="service-tag">{m.service_4_tag_3()}</span>
 				</div>
-				<button class="service-quote-btn" onclick={() => openQuote('optimization')}>{m.quote_modal_title()}</button>
+				<button class="service-quote-btn" onclick={() => openQuote('optimization')}
+					>{m.quote_modal_title()}</button
+				>
 			</article>
 
 			<article class="service-card">
@@ -56,7 +64,9 @@
 					<span class="service-tag">{m.service_5_tag_2()}</span>
 					<span class="service-tag">{m.service_5_tag_3()}</span>
 				</div>
-				<button class="service-quote-btn" onclick={() => openQuote('marketing')}>{m.quote_modal_title()}</button>
+				<button class="service-quote-btn" onclick={() => openQuote('marketing')}
+					>{m.quote_modal_title()}</button
+				>
 			</article>
 		</div>
 	</div>
@@ -163,7 +173,9 @@
 		font-family: var(--font-body);
 		color: var(--c-fg-muted);
 		cursor: pointer;
-		transition: border-color 0.15s, color 0.15s;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
 		margin-top: 1.25rem;
 	}
 
@@ -188,7 +200,7 @@
 		}
 
 		/* Last card and 2nd-to-last in last row have no bottom border */
-		.service-card:nth-last-child(-n+2):nth-child(2n+1),
+		.service-card:nth-last-child(-n + 2):nth-child(2n + 1),
 		.service-card:last-child {
 			border-bottom: none;
 		}
@@ -221,7 +233,7 @@
 		}
 
 		/* Items in last row have no bottom border */
-		.service-card:nth-child(n+4) {
+		.service-card:nth-child(n + 4) {
 			border-bottom: none;
 		}
 	}

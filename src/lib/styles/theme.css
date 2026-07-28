@@ -1,31 +1,25 @@
-/* ==========================================================================
-   devrec — Global Stylesheet
-   Based on provided Style Guide (colors, typography, spacing)
-   ========================================================================== */
-
-/* --- Fonts ------------------------------------------------- */
 @font-face {
-  font-family: "Gondens";
-  src: url("/fonts/gondens-demo.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-} 
-
-@font-face {
-  font-family: "DmSans";
-  src: url("/fonts/DMSans-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'Gondens';
+	src: url('/fonts/gondens-demo.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: "Nofex";
-  src: url("/fonts/Nofex.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+	font-family: 'DmSans';
+	src: url('/fonts/DMSans-Regular.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Nofex';
+	src: url('/fonts/Nofex.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 
 /* --- CSS Variables -------------------------------------------------------- */
@@ -63,7 +57,7 @@
 	--c-green: #00a63e;
 	--c-green-dark: #028331;
 	--c-yellow: #fdc700;
-    --c-red: #ff0000;
+	--c-red: #ff0000;
 
 	/* Hover states */
 	--hover-state-lighter: #ffffff21;
@@ -171,7 +165,6 @@
 	--divider: rgba(128, 128, 128, 0.287);
 }
 
-/* --- Site B&W Theme (light mode default) ---------------------------------- */
 :root {
 	--c-bg: #ffffff;
 	--c-bg-alt: #f7f7f7;
@@ -182,7 +175,6 @@
 	--c-accent-inv: #ffffff;
 	--header-bg: rgba(255, 255, 255, 0.9);
 
-	/* Hero — light mode */
 	--hero-bg: #ffffff;
 	--hero-gradient-opacity: 0;
 	--hero-text: #000000;
@@ -205,7 +197,6 @@
 	--c-accent-inv: #000000;
 	--header-bg: rgba(0, 0, 0, 0.9);
 
-	/* Hero — dark mode */
 	--hero-bg: #09070e;
 	--hero-gradient-opacity: 1;
 	--hero-text: #ffffff;
@@ -240,7 +231,9 @@ body {
 	font-family: var(--font-body);
 	background-color: var(--c-bg);
 	color: var(--c-fg);
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
 }
 
 img,
@@ -330,4 +323,3 @@ h6 {
 .section-heading {
 	margin-bottom: var(--space-8);
 }
-

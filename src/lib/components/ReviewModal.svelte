@@ -33,7 +33,10 @@
 				body: JSON.stringify({ email: email.trim() })
 			});
 			const data = await res.json().catch(() => ({}));
-			if (!res.ok) { errorMsg = data.error ?? 'Verzenden mislukt.'; return; }
+			if (!res.ok) {
+				errorMsg = data.error ?? 'Verzenden mislukt.';
+				return;
+			}
 			token = data.token;
 			step = 'verify';
 		} catch {
@@ -44,17 +47,29 @@
 	}
 
 	async function submitReview() {
-		if (!code.trim()) { errorMsg = 'Voer de verificatiecode in.'; return; }
+		if (!code.trim()) {
+			errorMsg = 'Voer de verificatiecode in.';
+			return;
+		}
 		loading = true;
 		errorMsg = '';
 		try {
 			const res = await fetch('/api/review/submit', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ token, code: code.trim(), authorName: authorName.trim(), rating, text: text.trim() })
+				body: JSON.stringify({
+					token,
+					code: code.trim(),
+					authorName: authorName.trim(),
+					rating,
+					text: text.trim()
+				})
 			});
 			const data = await res.json().catch(() => ({}));
-			if (!res.ok) { errorMsg = data.error ?? 'Er ging iets mis.'; return; }
+			if (!res.ok) {
+				errorMsg = data.error ?? 'Er ging iets mis.';
+				return;
+			}
 			step = 'success';
 			invalidateAll();
 		} catch {
@@ -68,8 +83,15 @@
 		onclose?.();
 		setTimeout(() => {
 			step = 'form';
-			authorName = ''; email = ''; text = ''; code = ''; token = ''; errorMsg = '';
-			rating = 5; hoverRating = 0; loading = false;
+			authorName = '';
+			email = '';
+			text = '';
+			code = '';
+			token = '';
+			errorMsg = '';
+			rating = 5;
+			hoverRating = 0;
+			loading = false;
 		}, 300);
 	}
 
@@ -85,9 +107,17 @@
 
 	<div class="modal" role="dialog" aria-modal="true" aria-label="Review plaatsen">
 		<button class="close-btn" onclick={handleClose} aria-label="Sluiten">
-			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-				<line x1="18" y1="6" x2="6" y2="18"/>
-				<line x1="6" y1="6" x2="18" y2="18"/>
+			<svg
+				width="20"
+				height="20"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
+				<line x1="18" y1="6" x2="6" y2="18" />
+				<line x1="6" y1="6" x2="18" y2="18" />
 			</svg>
 		</button>
 
@@ -97,7 +127,13 @@
 
 			<div class="form-group">
 				<label for="rv-name">Naam</label>
-				<input id="rv-name" type="text" bind:value={authorName} placeholder="Jouw naam" autocomplete="name" />
+				<input
+					id="rv-name"
+					type="text"
+					bind:value={authorName}
+					placeholder="Jouw naam"
+					autocomplete="name"
+				/>
 			</div>
 
 			<div class="form-group">
@@ -108,14 +144,24 @@
 							type="button"
 							class="star-btn"
 							class:active={n <= activeRating}
-							onmouseenter={() => hoverRating = n}
-							onmouseleave={() => hoverRating = 0}
-							onclick={() => rating = n}
+							onmouseenter={() => (hoverRating = n)}
+							onmouseleave={() => (hoverRating = 0)}
+							onclick={() => (rating = n)}
 							aria-label="{n} ster{n !== 1 ? 'ren' : ''}"
 							aria-pressed={n <= rating}
 						>
-							<svg width="30" height="30" viewBox="0 0 24 24" fill={n <= activeRating ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-								<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+							<svg
+								width="30"
+								height="30"
+								viewBox="0 0 24 24"
+								fill={n <= activeRating ? 'currentColor' : 'none'}
+								stroke="currentColor"
+								stroke-width="1.5"
+								aria-hidden="true"
+							>
+								<polygon
+									points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+								/>
 							</svg>
 						</button>
 					{/each}
@@ -124,7 +170,8 @@
 
 			<div class="form-group">
 				<label for="rv-text">Jouw review</label>
-				<textarea id="rv-text" bind:value={text} placeholder="Vertel over jouw ervaring..." rows="4"></textarea>
+				<textarea id="rv-text" bind:value={text} placeholder="Vertel over jouw ervaring..." rows="4"
+				></textarea>
 			</div>
 
 			<div class="form-group">
@@ -132,7 +179,13 @@
 					E-mailadres
 					<span class="label-note">voor verificatie, niet zichtbaar op de site</span>
 				</label>
-				<input id="rv-email" type="email" bind:value={email} placeholder="jouw@email.nl" autocomplete="email" />
+				<input
+					id="rv-email"
+					type="email"
+					bind:value={email}
+					placeholder="jouw@email.nl"
+					autocomplete="email"
+				/>
 			</div>
 
 			{#if errorMsg}
@@ -147,12 +200,11 @@
 					Stuur verificatiecode
 				{/if}
 			</button>
-
 		{:else if step === 'verify'}
 			<h2 class="modal-title">Bevestig je review</h2>
 			<p class="modal-sub">
-				We hebben een 6-cijferige code verstuurd naar <strong>{email}</strong>.
-				Voer hem hieronder in om je review te plaatsen.
+				We hebben een 6-cijferige code verstuurd naar <strong>{email}</strong>. Voer hem hieronder
+				in om je review te plaatsen.
 			</p>
 
 			<div class="form-group">
@@ -184,17 +236,25 @@
 					{/if}
 				</button>
 			</div>
-
 		{:else}
 			<div class="success-state">
 				<div class="success-icon" aria-hidden="true">
-					<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-						<circle cx="12" cy="12" r="10"/>
-						<polyline points="9 12 11 14 15 10"/>
+					<svg
+						width="44"
+						height="44"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+					>
+						<circle cx="12" cy="12" r="10" />
+						<polyline points="9 12 11 14 15 10" />
 					</svg>
 				</div>
 				<h2 class="modal-title">Review geplaatst!</h2>
-				<p class="modal-sub">Bedankt, {authorName}. Je review is ontvangen en wordt binnenkort zichtbaar.</p>
+				<p class="modal-sub">
+					Bedankt, {authorName}. Je review is ontvangen en wordt binnenkort zichtbaar.
+				</p>
 				<button class="primary-btn" onclick={handleClose}>Sluiten</button>
 			</div>
 		{/if}
@@ -230,7 +290,9 @@
 		scrollbar-width: none;
 	}
 
-	.modal::-webkit-scrollbar { display: none; }
+	.modal::-webkit-scrollbar {
+		display: none;
+	}
 
 	.close-btn {
 		position: absolute;
@@ -243,7 +305,9 @@
 		cursor: pointer;
 		border-radius: 6px;
 		display: flex;
-		transition: color 0.15s, background 0.15s;
+		transition:
+			color 0.15s,
+			background 0.15s;
 	}
 
 	.close-btn:hover {
@@ -275,7 +339,8 @@
 		margin-bottom: 1.1rem;
 	}
 
-	label, .label {
+	label,
+	.label {
 		font-size: 0.82rem;
 		font-weight: 600;
 		color: var(--c-fg);
@@ -292,7 +357,8 @@
 		color: var(--c-fg-muted);
 	}
 
-	input, textarea {
+	input,
+	textarea {
 		width: 100%;
 		background: var(--c-bg-alt);
 		border: 1px solid var(--c-border-site);
@@ -305,12 +371,14 @@
 		box-sizing: border-box;
 	}
 
-	input:focus, textarea:focus {
+	input:focus,
+	textarea:focus {
 		outline: none;
 		border-color: var(--c-fg);
 	}
 
-	input::placeholder, textarea::placeholder {
+	input::placeholder,
+	textarea::placeholder {
 		color: var(--c-fg-muted);
 		opacity: 0.6;
 	}
@@ -339,7 +407,9 @@
 		padding: 0.1rem;
 		cursor: pointer;
 		color: var(--c-border-site);
-		transition: color 0.1s, transform 0.1s;
+		transition:
+			color 0.1s,
+			transform 0.1s;
 		display: flex;
 	}
 
@@ -398,7 +468,9 @@
 		font-weight: 500;
 		color: var(--c-fg-muted);
 		cursor: pointer;
-		transition: border-color 0.15s, color 0.15s;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
 		font-family: inherit;
 	}
 
@@ -429,7 +501,9 @@
 	}
 
 	@keyframes spin {
-		to { transform: rotate(360deg); }
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.success-state {

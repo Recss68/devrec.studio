@@ -1,4 +1,4 @@
-import { defineType, defineField } from 'sanity'
+import {defineType, defineField} from 'sanity'
 
 export const review = defineType({
   name: 'review',
@@ -41,13 +41,13 @@ export const review = defineType({
     {
       title: 'Datum (nieuwste eerst)',
       name: 'dateDesc',
-      by: [{ field: 'date', direction: 'desc' }],
+      by: [{field: 'date', direction: 'desc'}],
     },
   ],
   preview: {
-    select: { title: 'author_name', subtitle: 'date' },
-    prepare({ title, subtitle }) {
-      return { title, subtitle: subtitle ? `⭐ ${subtitle}` : '' }
+    select: {title: 'author_name', subtitle: 'date'},
+    prepare({title, subtitle}) {
+      return {title, subtitle: subtitle ? `⭐ ${subtitle}` : ''}
     },
   },
 })

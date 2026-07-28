@@ -1,4 +1,4 @@
-import { defineType, defineField } from 'sanity'
+import {defineType, defineField} from 'sanity'
 
 export const post = defineType({
   name: 'post',
@@ -15,7 +15,7 @@ export const post = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: { source: 'title' },
+      options: {source: 'title'},
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -28,7 +28,7 @@ export const post = defineType({
       name: 'mainImage',
       title: 'Hoofdafbeelding',
       type: 'image',
-      options: { hotspot: true },
+      options: {hotspot: true},
     }),
     defineField({
       name: 'excerpt',
@@ -42,13 +42,13 @@ export const post = defineType({
       title: 'Inhoud',
       type: 'array',
       of: [
-        { type: 'block' },
+        {type: 'block'},
         {
           type: 'image',
-          options: { hotspot: true },
+          options: {hotspot: true},
           fields: [
-            defineField({ name: 'alt', title: 'Alt tekst', type: 'string' }),
-            defineField({ name: 'caption', title: 'Bijschrift', type: 'string' }),
+            defineField({name: 'alt', title: 'Alt tekst', type: 'string'}),
+            defineField({name: 'caption', title: 'Bijschrift', type: 'string'}),
           ],
         },
       ],
@@ -58,12 +58,12 @@ export const post = defineType({
     {
       title: 'Publicatiedatum (nieuwste eerst)',
       name: 'publishedAtDesc',
-      by: [{ field: 'publishedAt', direction: 'desc' }],
+      by: [{field: 'publishedAt', direction: 'desc'}],
     },
   ],
   preview: {
-    select: { title: 'title', subtitle: 'publishedAt', media: 'mainImage' },
-    prepare({ title, subtitle, media }) {
+    select: {title: 'title', subtitle: 'publishedAt', media: 'mainImage'},
+    prepare({title, subtitle, media}) {
       return {
         title,
         subtitle: subtitle ? new Date(subtitle).toLocaleDateString('nl-NL') : 'Niet gepubliceerd',
