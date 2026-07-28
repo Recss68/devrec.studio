@@ -92,6 +92,7 @@
 <style>
 	.portfolio-page {
 		padding-top: clamp(6rem, 12vw, 10rem);
+		padding-bottom: clamp(3rem, 5vw, 4rem);
 	}
 
 	.back-link {
