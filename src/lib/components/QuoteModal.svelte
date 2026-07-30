@@ -2,6 +2,7 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { quoteOpen, quoteService, closeQuote } from '$lib/stores/quote.js';
 	import { onMount } from 'svelte';
+	import Turnstile from '$lib/components/Turnstile.svelte';
 
 	const EMAIL = 'recep@devrec.nl';
 	const CALENDAR_EMBED_URL =
@@ -31,6 +32,8 @@
 	let email = $state('');
 	let phone = $state('');
 	let wantsMeeting = $state(null); // null | true | false
+	let cfToken = $state('');
+	let turnstileRef = $state(null);
 
 	const services = $derived([
 		{ key: 'web', label: m.service_1_title() },
@@ -120,6 +123,13 @@
 		email = '';
 		phone = '';
 		wantsMeeting = null;
+		cfToken = '';
+	}
+
+	function back() {
+		errors = {};
+		if (step === 4) cfToken = '';
+		step = Math.max(step - 1, 1);
 	}
 
 	function validate(s) {
@@ -145,11 +155,6 @@
 		}
 		errors = {};
 		step = Math.min(step + 1, TOTAL_STEPS);
-	}
-
-	function back() {
-		errors = {};
-		step = Math.max(step - 1, 1);
 	}
 
 	async function submit() {
@@ -178,7 +183,8 @@
 					fullName,
 					email,
 					phone,
-					wantsMeeting
+					wantsMeeting,
+					cfToken
 				})
 			});
 
@@ -514,6 +520,13 @@
 							></iframe>
 						</div>
 					{/if}
+
+					<Turnstile
+						bind:this={turnstileRef}
+						onVerify={(t) => (cfToken = t)}
+						onExpire={() => (cfToken = '')}
+						onError={() => (cfToken = '')}
+					/>
 				</div>
 			{/if}
 		</div>
@@ -556,7 +569,11 @@
 						</svg>
 					</button>
 				{:else}
-					<button class="btn-submit" onclick={submit} disabled={submitState === 'loading'}>
+					<button
+						class="btn-submit"
+						onclick={submit}
+						disabled={submitState === 'loading' || !cfToken}
+					>
 						{#if submitState === 'loading'}
 							<span class="spinner" aria-hidden="true"></span>
 						{:else}

@@ -13,9 +13,16 @@ export const portfolioAllQuery = groq`*[_type == "project"] | order(year desc, o
 }`;
 
 export const postsQuery = groq`*[_type == "post" && defined(slug.current)] | order(publishedAt desc){
-  _id, publishedAt, title, slug, excerpt, mainImage
+  _id, publishedAt, slug, mainImage,
+  title_nl, title_en,
+  excerpt_nl, excerpt_en,
+  "wordCount": length(string::split(pt::text(coalesce(body_nl, body_en)), " "))
 }`;
 
 export const postQuery = groq`*[_type == "post" && slug.current == $slug][0]{
-  _id, publishedAt, title, slug, excerpt, mainImage, body
+  _id, publishedAt, slug, mainImage,
+  title_nl, title_en,
+  excerpt_nl, excerpt_en,
+  body_nl, body_en,
+  "wordCount": length(string::split(pt::text(coalesce(body_nl, body_en)), " "))
 }`;

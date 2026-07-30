@@ -3,24 +3,53 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { openQuote } from '$lib/stores/quote.js';
 
-	let displayText = $state('');
+	const CHAR_DELAY = 42; // ms per character
+
+	function parseHeading(text) {
+		const raw = text.match(/\S+|\s+/g) ?? [];
+		let idx = 0;
+		return raw.map((token) => {
+			if (/\s/.test(token)) return { space: token };
+			return { chars: token.split('').map((ch) => ({ ch, idx: idx++ })) };
+		});
+	}
+
+	const heading = $derived(m.hero_heading());
+	const tokens = $derived(parseHeading(heading));
+	const totalChars = $derived(tokens.reduce((n, t) => (t.chars ? n + t.chars.length : n), 0));
+
 	let typingDone = $state(false);
+	let headingEl = $state(null);
+	let cursorEl = $state(null);
 
 	onMount(() => {
-		const fullText = m.hero_heading();
-		let i = 0;
+		let interval;
 
-		const typeInterval = setInterval(() => {
-			if (i < fullText.length) {
-				displayText = fullText.slice(0, i + 1);
-				i++;
-			} else {
-				clearInterval(typeInterval);
-				typingDone = true;
-			}
-		}, 55);
+		requestAnimationFrame(() => {
+			const charEls = Array.from(headingEl?.querySelectorAll('.char') ?? []);
+			if (!charEls.length || !cursorEl) return;
 
-		return () => clearInterval(typeInterval);
+			let i = 0;
+
+			const step = () => {
+				const target = charEls[i] ?? charEls[charEls.length - 1];
+				// offsetLeft/offsetTop are layout properties — unaffected by CSS transforms
+				cursorEl.style.left = target.offsetLeft + target.offsetWidth + 'px';
+				cursorEl.style.top = target.offsetTop + 'px';
+				cursorEl.classList.add('cursor-on');
+
+				if (i < charEls.length - 1) {
+					i++;
+				} else {
+					clearInterval(interval);
+					typingDone = true;
+				}
+			};
+
+			interval = setInterval(step, CHAR_DELAY);
+		});
+
+		return () => clearInterval(interval);
 	});
 </script>
 
@@ -31,12 +60,21 @@
 		<div class="hero-inner">
 			<span class="hero-label">{m.hero_label()}</span>
 
-			<h1 class="hero-heading" aria-label={m.hero_heading()}>
-				{#each displayText.match(/\S+|\s+/g) || [] as token, ti (ti)}
-					{#if /\s/.test(token)}{token}{:else}<span class="word"
-							>{#each token.split('') as char, ci (ci)}<span class="char">{char}</span>{/each}</span
+			<h1 class="hero-heading" aria-label={heading} bind:this={headingEl}>
+				{#each tokens as token, ti (ti)}
+					{#if token.space}{token.space}{:else}<span class="word"
+							>{#each token.chars as { ch, idx } (idx)}<span
+									class="char"
+									style="animation-delay:{idx * CHAR_DELAY}ms">{ch}</span
+								>{/each}</span
 						>{/if}
-				{/each}<span class="cursor" class:blink={typingDone} aria-hidden="true">|</span>
+				{/each}
+				<span
+					class="cursor"
+					class:blink={typingDone}
+					bind:this={cursorEl}
+					aria-hidden="true">|</span
+				>
 			</h1>
 
 			<p class="hero-subtitle">{m.hero_subtitle()}</p>
@@ -131,13 +169,14 @@
 		color: var(--hero-text);
 		margin: 0 0 1.5rem 0;
 		transition: color 0.2s ease;
-		min-height: 1.1em;
 		word-break: break-word;
+		position: relative;
 	}
 
 	.char {
 		display: inline-block;
 		animation: char-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+		will-change: transform, opacity;
 	}
 
 	.word {
@@ -148,22 +187,28 @@
 	@keyframes char-in {
 		from {
 			opacity: 0;
-			transform: translateY(0.2em);
-			filter: blur(4px);
+			transform: translateY(0.25em);
 		}
 		to {
 			opacity: 1;
 			transform: translateY(0);
-			filter: blur(0);
 		}
 	}
 
 	.cursor {
-		display: inline-block;
+		position: absolute;
+		left: 0;
+		top: 0;
+		opacity: 0;
 		color: var(--hero-text);
-		opacity: 1;
 		font-weight: 100;
-		margin-left: 0.02em;
+		line-height: 1;
+		pointer-events: none;
+		will-change: transform;
+	}
+
+	.cursor.cursor-on {
+		opacity: 1;
 	}
 
 	.cursor.blink {
@@ -246,6 +291,7 @@
 		letter-spacing: 0.03em;
 		transition: color 0.15s ease;
 		animation: bounce 2s ease-in-out infinite;
+		will-change: transform;
 	}
 
 	.scroll-indicator:hover {

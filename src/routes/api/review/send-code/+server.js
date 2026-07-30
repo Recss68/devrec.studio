@@ -2,6 +2,7 @@ import { createHmac, randomBytes } from 'crypto';
 import { Resend } from 'resend';
 import { json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+import { verifyTurnstile } from '$lib/server/turnstile.js';
 
 const attempts = new Map();
 const MAX_ATTEMPTS = 3;
@@ -29,7 +30,11 @@ export async function POST({ request, getClientAddress }) {
 		);
 	}
 
-	const { email } = await request.json();
+	const { email, cfToken } = await request.json();
+
+	if (!(await verifyTurnstile(cfToken, ip))) {
+		return json({ error: 'Captcha verificatie mislukt. Probeer het opnieuw.' }, { status: 400 });
+	}
 
 	const trimmed = (email ?? '').trim().toLowerCase();
 	if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {

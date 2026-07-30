@@ -2,10 +2,16 @@ import { json, error } from '@sveltejs/kit';
 import { Resend } from 'resend';
 import { env } from '$env/dynamic/private';
 import { escapeHtml } from '$lib/server/email.js';
+import { verifyTurnstile } from '$lib/server/turnstile.js';
 
-export async function POST({ request }) {
+export async function POST({ request, getClientAddress }) {
+	const ip = getClientAddress();
 	const body = await request.json().catch(() => null);
-	const { url, email } = body ?? {};
+	const { url, email, cfToken } = body ?? {};
+
+	if (!(await verifyTurnstile(cfToken, ip))) {
+		throw error(400, 'Captcha verificatie mislukt. Probeer het opnieuw.');
+	}
 
 	if (!url?.trim() || !email?.trim()) {
 		throw error(400, 'URL en e-mailadres zijn verplicht.');

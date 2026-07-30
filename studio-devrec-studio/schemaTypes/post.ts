@@ -6,8 +6,14 @@ export const post = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
+      name: 'title_nl',
       title: 'Titel',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'title_en',
+      title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
@@ -31,15 +37,38 @@ export const post = defineType({
       options: {hotspot: true},
     }),
     defineField({
-      name: 'excerpt',
+      name: 'excerpt_nl',
       title: 'Samenvatting',
       type: 'text',
       rows: 3,
       description: 'Korte beschrijving voor overzichtspagina en SEO',
     }),
     defineField({
-      name: 'body',
-      title: 'Inhoud',
+      name: 'excerpt_en',
+      title: 'Summary',
+      type: 'text',
+      rows: 3,
+      description: 'Short description for overview page and SEO',
+    }),
+    defineField({
+      name: 'body_nl',
+      title: 'Inhoud NL',
+      type: 'array',
+      of: [
+        {type: 'block'},
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({name: 'alt', title: 'Alt tekst', type: 'string'}),
+            defineField({name: 'caption', title: 'Bijschrift', type: 'string'}),
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'body_en',
+      title: 'Content EN',
       type: 'array',
       of: [
         {type: 'block'},

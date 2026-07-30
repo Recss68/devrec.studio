@@ -2,6 +2,7 @@
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"nav_about": "Over mij",
 	"nav_portfolio": "Portfolio",
+	"nav_blog": "Blog",
 	"nav_contact": "Contact",
 	"nav_services": "Diensten",
 	"hero_label": "Webdeveloper & Digital Partner",
@@ -227,5 +228,14 @@
 	"check_agentic_heading": "AI-Gereedheid",
 	"check_agentic_sub": "Hoe toegankelijk en vindbaar is jouw website voor AI-agents en geautomatiseerde browsers?",
 	"check_agentic_score": "{passed} van {total} checks geslaagd",
-	"check_agentic_experimental": "Experimenteel"
+	"check_agentic_experimental": "Experimenteel",
+
+	"blog_page_title": "Blog | devrec",
+	"blog_meta_desc": "Artikelen over webdevelopment, design en digitale strategie door devrec.",
+	"blog_heading": "Inzichten & artikelen",
+	"blog_sub": "Over webdevelopment, design en alles wat ertussen zit.",
+	"blog_empty": "Er zijn nog geen artikelen gepubliceerd. Kom snel terug.",
+	"blog_read_more": "Lees artikel →",
+	"blog_back": "Terug naar blog",
+	"blog_min_read": "{minutes} min leestijd"
 }

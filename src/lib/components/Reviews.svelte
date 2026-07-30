@@ -105,7 +105,7 @@
 				{#if avgRating > 0}
 					<div class="rating-summary">
 						<span class="rating-num">{avgRating.toFixed(1)}</span>
-						<div class="rating-stars" aria-label="{avgRating.toFixed(1)} / 5">
+						<div class="rating-stars" role="img" aria-label="{avgRating.toFixed(1)} van 5 sterren">
 							{#each starList(avgRating) as filled}
 								<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
 									{#if filled}
@@ -138,7 +138,7 @@
 								<span class="review-name">{review.author_name}</span>
 								<span class="review-time">{timeAgo(review.date)}</span>
 							</div>
-							<div class="review-stars" aria-label="{review.rating} van 5 sterren">
+							<div class="review-stars" role="img" aria-label="{review.rating} van 5 sterren">
 								{#each starList(review.rating) as filled}
 									<svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true">
 										{#if filled}

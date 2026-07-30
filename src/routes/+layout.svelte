@@ -4,7 +4,6 @@
 	import { Header, Footer, QuoteModal } from '$lib';
 	import CookieConsent from '$lib/components/CookieConsent.svelte';
 	import { page } from '$app/state';
-	import { PreviewMode, QueryLoader, VisualEditing } from '@sanity/sveltekit';
 	import { client } from '$lib/sanity/client';
 
 	// svelte-ignore state_referenced_locally
@@ -13,6 +12,10 @@
 
 	const siteName = 'devrec';
 	const ogImage = 'https://devrec.nl/og-image.png';
+
+	const SanityPreview = previewEnabled
+		? import('$lib/components/SanityPreview.svelte').then((m) => m.default)
+		: null;
 </script>
 
 <svelte:head>
@@ -30,9 +33,9 @@
 	<meta name="twitter:image" content={ogImage} />
 </svelte:head>
 
-<PreviewMode enabled={previewEnabled}>
-	<VisualEditing enabled={previewEnabled}>
-		<QueryLoader enabled={previewEnabled} {client}>
+{#if previewEnabled && SanityPreview}
+	{#await SanityPreview then Preview}
+		<Preview {client} enabled={previewEnabled}>
 			<Header />
 			<main>
 				{@render children()}
@@ -40,9 +43,17 @@
 			<Footer />
 			<CookieConsent />
 			<QuoteModal />
-		</QueryLoader>
-	</VisualEditing>
-</PreviewMode>
+		</Preview>
+	{/await}
+{:else}
+	<Header />
+	<main>
+		{@render children()}
+	</main>
+	<Footer />
+	<CookieConsent />
+	<QuoteModal />
+{/if}
 
 <style>
 	main {

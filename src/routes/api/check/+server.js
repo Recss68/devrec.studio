@@ -1,5 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+import { verifyTurnstile } from '$lib/server/turnstile.js';
 
 const attempts = new Map();
 const MAX = 10;
@@ -29,11 +30,17 @@ const PSI_ERRORS = {
 };
 
 export async function POST({ request, getClientAddress }) {
-	if (isRateLimited(getClientAddress())) {
+	const ip = getClientAddress();
+	if (isRateLimited(ip)) {
 		throw error(429, 'Te veel verzoeken. Probeer het later opnieuw.');
 	}
 	const body = await request.json().catch(() => null);
-	let raw = (body?.url ?? '').trim();
+	const { url: rawUrl, cfToken } = body ?? {};
+	let raw = (rawUrl ?? '').trim();
+
+	if (!(await verifyTurnstile(cfToken, ip))) {
+		throw error(400, 'Captcha verificatie mislukt. Probeer het opnieuw.');
+	}
 
 	if (!raw) throw error(400, 'Geen URL opgegeven.');
 

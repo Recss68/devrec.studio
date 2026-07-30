@@ -1,5 +1,6 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
+	import Turnstile from '$lib/components/Turnstile.svelte';
 
 	const EMAIL = 'recep@devrec.nl';
 
@@ -7,17 +8,19 @@
 	let email = $state('');
 	let message = $state('');
 	let status = $state('idle'); // idle | loading | success | error
+	let cfToken = $state('');
+	let turnstileRef = $state(null);
 
 	async function handleSubmit(e) {
 		e.preventDefault();
-		if (status === 'loading') return;
+		if (status === 'loading' || !cfToken) return;
 		status = 'loading';
 
 		try {
 			const res = await fetch('/api/contact', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ name, email, message })
+				body: JSON.stringify({ name, email, message, cfToken })
 			});
 
 			if (!res.ok) {
@@ -29,6 +32,8 @@
 			name = '';
 			email = '';
 			message = '';
+			cfToken = '';
+			turnstileRef?.reset();
 		} catch {
 			status = 'error';
 		}
@@ -58,7 +63,14 @@
 					<textarea id="contact-message" bind:value={message} rows="5" required></textarea>
 				</div>
 
-				<button type="submit" class="submit-btn" disabled={status === 'loading'}>
+				<Turnstile
+					bind:this={turnstileRef}
+					onVerify={(t) => (cfToken = t)}
+					onExpire={() => (cfToken = '')}
+					onError={() => (cfToken = '')}
+				/>
+
+				<button type="submit" class="submit-btn" disabled={status === 'loading' || !cfToken}>
 					{#if status === 'loading'}
 						<span class="spinner" aria-hidden="true"></span>
 					{:else}

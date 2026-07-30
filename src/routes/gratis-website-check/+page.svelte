@@ -1,5 +1,6 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
+	import Turnstile from '$lib/components/Turnstile.svelte';
 
 	let urlInput = $state('');
 	let loading = $state(false);
@@ -10,6 +11,11 @@
 	let email = $state('');
 	let reportSent = $state(false);
 	let openFaq = $state(null);
+
+	let cfToken = $state('');
+	let cfTokenReport = $state('');
+	let turnstileRef = $state(null);
+	let turnstileReportRef = $state(null);
 
 	const CIRC = 251.33;
 
@@ -140,7 +146,7 @@
 	let loadingTimer;
 
 	async function runCheck() {
-		if (!urlInput.trim() || loading) return;
+		if (!urlInput.trim() || loading || !cfToken) return;
 		loading = true;
 		result = null;
 		errMsg = '';
@@ -155,7 +161,7 @@
 			const res = await fetch('/api/check', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ url: urlInput.trim() })
+				body: JSON.stringify({ url: urlInput.trim(), cfToken })
 			});
 
 			if (!res.ok) {
@@ -175,6 +181,8 @@
 		} finally {
 			clearInterval(loadingTimer);
 			loading = false;
+			cfToken = '';
+			turnstileRef?.reset();
 		}
 	}
 
@@ -187,7 +195,7 @@
 			const res = await fetch('/api/check-report', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ url: urlInput, email })
+				body: JSON.stringify({ url: urlInput, email, cfToken: cfTokenReport })
 			});
 
 			if (!res.ok) return;
@@ -265,7 +273,7 @@
 			/>
 			<button
 				onclick={runCheck}
-				disabled={loading || !urlInput.trim()}
+				disabled={loading || !urlInput.trim() || !cfToken}
 				class="url-btn"
 				aria-label={m.check_analyse_aria()}
 			>
@@ -276,6 +284,13 @@
 				{/if}
 			</button>
 		</div>
+
+		<Turnstile
+			bind:this={turnstileRef}
+			onVerify={(t) => (cfToken = t)}
+			onExpire={() => (cfToken = '')}
+			onError={() => (cfToken = '')}
+		/>
 
 		<p class="url-hint">{m.check_url_hint()} <em>{m.check_url_hint_example()}</em></p>
 	</div>
@@ -530,10 +545,20 @@
 						class="report-input"
 						aria-label={m.check_report_placeholder()}
 					/>
-					<button onclick={sendReport} disabled={!email.trim()} class="report-btn">
+					<button
+						onclick={sendReport}
+						disabled={!email.trim() || !cfTokenReport}
+						class="report-btn"
+					>
 						{m.check_report_btn()}
 					</button>
 				</div>
+				<Turnstile
+					bind:this={turnstileReportRef}
+					onVerify={(t) => (cfTokenReport = t)}
+					onExpire={() => (cfTokenReport = '')}
+					onError={() => (cfTokenReport = '')}
+				/>
 				<p class="report-note">{m.check_report_note()}</p>
 			{:else}
 				<div class="report-success">

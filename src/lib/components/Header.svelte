@@ -59,6 +59,7 @@
 		{ key: 'nav_about', href: '#over-mij' },
 		{ key: 'nav_services', href: '#diensten' },
 		{ key: 'nav_portfolio', href: '/portfolio' },
+		{ key: 'nav_blog', href: '/blog' },
 		{ key: 'nav_contact', href: '#contact' }
 	];
 
@@ -66,6 +67,7 @@
 		if (key === 'nav_about') return m.nav_about();
 		if (key === 'nav_services') return m.nav_services();
 		if (key === 'nav_portfolio') return m.nav_portfolio();
+		if (key === 'nav_blog') return m.nav_blog();
 		return m.nav_contact();
 	}
 </script>
@@ -190,10 +192,10 @@
 	aria-label="Mobiele navigatie"
 >
 	<div class="mobile-nav-top">
-		<a href="/" class="mobile-logo" onclick={closeMenu} aria-label="devrec home">
+		<a href="/" class="mobile-logo" onclick={closeMenu} aria-label="devrec home" tabindex={menuOpen ? 0 : -1}>
 			devrec<span class="logo-dot">.</span>
 		</a>
-		<button class="mobile-close-btn" onclick={closeMenu} aria-label="Menu sluiten">
+		<button class="mobile-close-btn" onclick={closeMenu} aria-label="Menu sluiten" tabindex={menuOpen ? 0 : -1}>
 			<svg
 				width="24"
 				height="24"

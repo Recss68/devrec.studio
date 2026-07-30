@@ -2,6 +2,7 @@ import { json, error } from '@sveltejs/kit';
 import { Resend } from 'resend';
 import { env } from '$env/dynamic/private';
 import { escapeHtml } from '$lib/server/email.js';
+import { verifyTurnstile } from '$lib/server/turnstile.js';
 
 const attempts = new Map();
 const MAX = 5;
@@ -20,12 +21,17 @@ function isRateLimited(ip) {
 }
 
 export async function POST({ request, getClientAddress }) {
-	if (isRateLimited(getClientAddress())) {
+	const ip = getClientAddress();
+	if (isRateLimited(ip)) {
 		throw error(429, 'Te veel verzoeken. Probeer het later opnieuw.');
 	}
 	const body = await request.json().catch(() => null);
-	const { service, company, website, need, budget, fullName, email, phone, wantsMeeting } =
+	const { service, company, website, need, budget, fullName, email, phone, wantsMeeting, cfToken } =
 		body ?? {};
+
+	if (!(await verifyTurnstile(cfToken, ip))) {
+		throw error(400, 'Captcha verificatie mislukt. Probeer het opnieuw.');
+	}
 
 	if (!service || !company?.trim() || !need?.trim() || !fullName?.trim() || !email?.trim()) {
 		throw error(400, 'Verplichte velden ontbreken.');

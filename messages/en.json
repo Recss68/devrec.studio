@@ -2,6 +2,7 @@
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"nav_about": "About",
 	"nav_portfolio": "Portfolio",
+	"nav_blog": "Blog",
 	"nav_contact": "Contact",
 	"nav_services": "Services",
 	"hero_label": "Web Developer & Digital Partner",
@@ -227,5 +228,14 @@
 	"check_agentic_heading": "AI Readiness",
 	"check_agentic_sub": "How accessible and discoverable is your website for AI agents and automated browsers?",
 	"check_agentic_score": "{passed} of {total} checks passed",
-	"check_agentic_experimental": "Experimental"
+	"check_agentic_experimental": "Experimental",
+
+	"blog_page_title": "Blog | devrec",
+	"blog_meta_desc": "Articles about web development, design and digital strategy by devrec.",
+	"blog_heading": "Insights & articles",
+	"blog_sub": "About web development, design and everything in between.",
+	"blog_empty": "No articles have been published yet. Check back soon.",
+	"blog_read_more": "Read article →",
+	"blog_back": "Back to blog",
+	"blog_min_read": "{minutes} min read"
 }

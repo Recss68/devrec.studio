@@ -1,5 +1,6 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
+	import Turnstile from '$lib/components/Turnstile.svelte';
 
 	/** @type {{ open?: boolean, onclose?: () => void }} */
 	const { open = false, onclose } = $props();
@@ -16,6 +17,8 @@
 
 	let code = $state('');
 	let token = $state('');
+	let cfToken = $state('');
+	let turnstileRef = $state(null);
 
 	const activeRating = $derived(hoverRating || rating);
 
@@ -24,13 +27,17 @@
 			errorMsg = 'Vul alle velden in.';
 			return;
 		}
+		if (!cfToken) {
+			errorMsg = 'Wacht even tot de captcha is geladen.';
+			return;
+		}
 		loading = true;
 		errorMsg = '';
 		try {
 			const res = await fetch('/api/review/send-code', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email: email.trim() })
+				body: JSON.stringify({ email: email.trim(), cfToken })
 			});
 			const data = await res.json().catch(() => ({}));
 			if (!res.ok) {
@@ -88,6 +95,7 @@
 			text = '';
 			code = '';
 			token = '';
+			cfToken = '';
 			errorMsg = '';
 			rating = 5;
 			hoverRating = 0;
@@ -188,11 +196,18 @@
 				/>
 			</div>
 
+			<Turnstile
+				bind:this={turnstileRef}
+				onVerify={(t) => (cfToken = t)}
+				onExpire={() => (cfToken = '')}
+				onError={() => (cfToken = '')}
+			/>
+
 			{#if errorMsg}
 				<p class="error-msg">{errorMsg}</p>
 			{/if}
 
-			<button class="primary-btn" onclick={requestCode} disabled={loading}>
+			<button class="primary-btn" onclick={requestCode} disabled={loading || !cfToken}>
 				{#if loading}
 					<span class="spinner" aria-hidden="true"></span>
 					Bezig...
