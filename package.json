@@ -33,5 +33,11 @@
 		"vite": "^7.3.1",
 		"vitest": "^4.1.0",
 		"vitest-browser-svelte": "^2.0.2"
+	},
+	"dependencies": {
+		"@portabletext/svelte": "^3.0.1",
+		"@sanity/image-url": "^2.1.1",
+		"@sanity/sveltekit": "^2.1.0",
+		"resend": "^6.18.0"
 	}
 }
