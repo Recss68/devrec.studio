@@ -38,6 +38,9 @@
 		"@portabletext/svelte": "^3.0.1",
 		"@sanity/image-url": "^2.1.1",
 		"@sanity/sveltekit": "^2.1.0",
-		"resend": "^6.18.0"
+		"@vercel/analytics": "^2.0.1",
+		"@vercel/speed-insights": "^2.0.0",
+		"resend": "^6.18.0",
+		"styled-components": "^6.4.4"
 	}
 }

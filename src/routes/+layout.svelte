@@ -5,6 +5,12 @@
 	import CookieConsent from '$lib/components/CookieConsent.svelte';
 	import { page } from '$app/state';
 	import { client } from '$lib/sanity/client';
+	import { dev } from '$app/environment';
+	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+
+	injectAnalytics({ mode: dev ? 'development' : 'production' });
+	injectSpeedInsights();
 
 	// svelte-ignore state_referenced_locally
 	const { children, data } = $props();
