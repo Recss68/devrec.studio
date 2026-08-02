@@ -4,8 +4,28 @@ import { env } from '$env/dynamic/private';
 import { escapeHtml } from '$lib/server/email.js';
 import { verifyTurnstile } from '$lib/server/turnstile.js';
 
+const attempts = new Map();
+const MAX = 3;
+const WINDOW_MS = 60 * 60 * 1000;
+
+function isRateLimited(ip) {
+	const now = Date.now();
+	const entry = attempts.get(ip);
+	if (!entry || now - entry.start > WINDOW_MS) {
+		attempts.set(ip, { count: 1, start: now });
+		return false;
+	}
+	if (entry.count >= MAX) return true;
+	entry.count++;
+	return false;
+}
+
 export async function POST({ request, getClientAddress }) {
 	const ip = getClientAddress();
+	if (isRateLimited(ip)) {
+		throw error(429, 'Te veel verzoeken. Probeer het later opnieuw.');
+	}
+
 	const body = await request.json().catch(() => null);
 	const { url, email, cfToken } = body ?? {};
 

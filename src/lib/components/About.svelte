@@ -12,6 +12,22 @@
 				<p class="about-tagline">{m.about_tagline()}</p>
 				<p>{m.about_bio_1()}</p>
 				<p>{m.about_bio_2()}</p>
+
+				<a href="/over-mij" class="read-more-link">
+					{m.about_read_more()}
+					<svg
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
+						<line x1="5" y1="12" x2="19" y2="12" />
+						<polyline points="12 5 19 12 12 19" />
+					</svg>
+				</a>
 			</div>
 
 			<div class="about-aside">
@@ -75,6 +91,22 @@
 	.about-text p:not(.about-tagline) {
 		max-width: 560px;
 		line-height: 1.7;
+	}
+
+	.read-more-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--c-fg-muted);
+		text-decoration: none;
+		margin-top: 0.5rem;
+		transition: color 0.15s ease;
+	}
+
+	.read-more-link:hover {
+		color: var(--c-fg);
 	}
 
 	.about-aside {

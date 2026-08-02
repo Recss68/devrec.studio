@@ -27,6 +27,20 @@ const handleSecurityHeaders = async ({ event, resolve }) => {
 	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 	response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 	response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+	response.headers.set(
+		'Content-Security-Policy',
+		[
+			"default-src 'self'",
+			"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+			"frame-src https://challenges.cloudflare.com",
+			"img-src 'self' data: https://cdn.sanity.io",
+			"connect-src 'self' https://cdn.sanity.io https://api.sanity.io https://challenges.cloudflare.com",
+			"font-src 'self'",
+			"style-src 'self' 'unsafe-inline'",
+			"object-src 'none'",
+			"base-uri 'self'"
+		].join('; ')
+	);
 	return response;
 };
 
