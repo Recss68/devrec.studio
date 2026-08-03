@@ -56,7 +56,7 @@
 	}
 
 	const navLinks = [
-		{ key: 'nav_about', href: '/#over-mij' },
+		{ key: 'nav_about', href: '/over-mij' },
 		{ key: 'nav_services', href: '/#diensten' },
 		{ key: 'nav_portfolio', href: '/portfolio' },
 		{ key: 'nav_blog', href: '/blog' },
