@@ -171,21 +171,23 @@
 	<div class="cv-hero-gradient" aria-hidden="true"></div>
 
 	<div class="cv-hero-inner">
-		<a href="/" class="back-link">
-			<svg
-				width="14"
-				height="14"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				aria-hidden="true"
-			>
-				<line x1="19" y1="12" x2="5" y2="12" />
-				<polyline points="12 19 5 12 12 5" />
-			</svg>
-			{m.cv_back()}
-		</a>
+		<div class="cv-hero-top">
+			<a href="/" class="back-link">
+				<svg
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					aria-hidden="true"
+				>
+					<line x1="19" y1="12" x2="5" y2="12" />
+					<polyline points="12 19 5 12 12 5" />
+				</svg>
+				{m.cv_back()}
+			</a>
+		</div>
 
 		<div class="cv-hero-content">
 			<span class="availability-badge">
@@ -403,17 +405,28 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		padding: 8rem clamp(1.25rem, 5vw, 2.5rem) 5rem;
+		padding-inline: clamp(1.25rem, 5vw, 2.5rem);
 		max-width: 1280px;
 		margin-inline: auto;
 		width: 100%;
 	}
 
+	.cv-hero-top {
+		padding-top: clamp(5.5rem, 8vw, 7rem);
+		padding-bottom: 1.5rem;
+	}
+
+	.cv-hero-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		padding-bottom: 5rem;
+		max-width: 820px;
+	}
+
 	.back-link {
-		position: absolute;
-		top: clamp(1.5rem, 4vw, 2rem);
-		left: clamp(1.25rem, 5vw, 2.5rem);
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
@@ -425,10 +438,6 @@
 
 	.back-link:hover {
 		color: var(--hero-text);
-	}
-
-	.cv-hero-content {
-		max-width: 820px;
 	}
 
 	.availability-badge {
@@ -1016,10 +1025,6 @@
 	}
 
 	@media (min-width: 768px) {
-		.cv-hero-inner {
-			padding-top: 10rem;
-		}
-
 		.skills-grid {
 			grid-template-columns: 1fr 1fr;
 		}
