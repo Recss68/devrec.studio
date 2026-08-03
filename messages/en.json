@@ -264,5 +264,14 @@
 	"cv_cert_heading": "My certifications",
 	"cv_cta_heading": "Ready for new challenges.",
 	"cv_cta_sub": "Looking for an eager front-end developer who grows with the team? Send me a message.",
-	"cv_cta_btn": "Send a message"
+	"cv_cta_btn": "Send a message",
+
+	"sitemap_page_title": "Sitemap | devrec",
+	"sitemap_back": "Back to home",
+	"sitemap_heading": "Sitemap",
+	"sitemap_sub": "An overview of all pages on this website.",
+	"sitemap_group_pages": "Pages",
+	"sitemap_group_sections": "Sections",
+	"sitemap_group_legal": "Legal",
+	"footer_sitemap": "Sitemap"
 }

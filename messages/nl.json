@@ -264,5 +264,14 @@
 	"cv_cert_heading": "Mijn certificaten",
 	"cv_cta_heading": "Klaar voor nieuwe uitdagingen.",
 	"cv_cta_sub": "Op zoek naar een leergierige front-end developer die bijdraagt en groeit? Stuur me een bericht.",
-	"cv_cta_btn": "Stuur een bericht"
+	"cv_cta_btn": "Stuur een bericht",
+
+	"sitemap_page_title": "Sitemap | devrec",
+	"sitemap_back": "Terug naar home",
+	"sitemap_heading": "Sitemap",
+	"sitemap_sub": "Een overzicht van alle pagina's op deze website.",
+	"sitemap_group_pages": "Pagina's",
+	"sitemap_group_sections": "Secties",
+	"sitemap_group_legal": "Juridisch",
+	"footer_sitemap": "Sitemap"
 }

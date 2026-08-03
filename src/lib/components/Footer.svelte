@@ -20,10 +20,10 @@
 	});
 
 	const navLinks = [
-		{ key: 'nav_about', href: '#over-mij' },
-		{ key: 'nav_services', href: '#diensten' },
+		{ key: 'nav_about', href: '/over-mij' },
+		{ key: 'nav_services', href: '/#diensten' },
 		{ key: 'nav_portfolio', href: '/portfolio' },
-		{ key: 'nav_contact', href: '#contact' }
+		{ key: 'nav_contact', href: '/#contact' }
 	];
 </script>
 
@@ -67,6 +67,7 @@
 			<div class="footer-legal-row">
 				<a href="/privacy" class="footer-link">{m.footer_privacy()}</a>
 				<a href="/algemene-voorwaarden" class="footer-link">{m.footer_terms()}</a>
+				<a href="/sitemap" class="footer-link footer-link--dim">{m.footer_sitemap()}</a>
 				<p class="copyright">&copy; {year} devrec · {m.footer_rights()}</p>
 			</div>
 		</div>
@@ -195,6 +196,15 @@
 
 	.footer-link:hover {
 		color: var(--c-fg);
+	}
+
+	.footer-link--dim {
+		font-size: 0.8rem;
+		opacity: 0.6;
+	}
+
+	.footer-link--dim:hover {
+		opacity: 1;
 	}
 
 	.copyright {
